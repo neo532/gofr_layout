@@ -6,5 +6,6 @@ import (
 )
 
 var ProviderSet = wire.NewSet(
+	NewTransactionDefaultRepo,
 	NewUserRepo,
 )

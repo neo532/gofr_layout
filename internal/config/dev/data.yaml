@@ -9,10 +9,10 @@ data:
       table_prefix: 
       _database_read:
         name: "default_read"
-        dsn: root:password@tcp(test.domain:3306)/dbName?charset=utf8mb4&parseTime=true&loc=Local
+        dsn: root:12345678@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=true&loc=Local
       _database_write:
         name: "default_write"
-        dsn: root:password@tcp(test.domain:3306)/dbName?charset=utf8mb4&parseTime=true&loc=Local
+        dsn: root:12345678@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=true&loc=Local
   database_biz:
     _database_conf:
       max_open_conns: 2
@@ -22,10 +22,10 @@ data:
       table_prefix: 
       _database_read:
         name: "default_read"
-        dsn: root:password@tcp(test.domain:3306)/dbName?charset=utf8mb4&parseTime=true&loc=Local
+        dsn: root:12345678@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=true&loc=Local
       _database_write:
         name: "default_write"
-        dsn: root:password@tcp(test.domain:3306)/dbName?charset=utf8mb4&parseTime=true&loc=Local
+        dsn: root:12345678@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=true&loc=Local
 
 
 

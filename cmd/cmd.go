@@ -14,7 +14,9 @@ import (
 	"github.com/neo532/gokit/logger/writer/lumberjack"
 )
 
-type Entry string
+type (
+	Entry string
+)
 
 const (
 	EntryApi      = "api"
@@ -23,42 +25,18 @@ const (
 )
 
 var (
-	InitUnitTestSet = wire.NewSet(BootContext, InitConfig, InitLogger)
+	ProviderSet = wire.NewSet(BootContext, InitConfig, InitLogger)
+	ConfigPath  = "./configs/"
 )
 
-// func ConfBootstap() (bs *conf.Bootstrap) {
-// 	rootPath := "."
-
-// 	if pwd, err := os.Getwd(); err == nil {
-
-// 		pn := strings.Split(reflect.TypeOf(pkg{}).PkgPath(), "/")
-// 		pkgName := "/" + pn[len(pn)-2]
-
-// 		tmp := strings.SplitN(pwd, pkgName, 2)
-// 		if len(tmp) > 0 {
-// 			rootPath = tmp[0] + pkgName
-// 		}
-// 	}
-
-// 	var err error
-// 	if bs, err = InitConfig(rootPath + "/configs/config.yaml"); err != nil {
-// 		panic(err)
-// 	}
-// 	return bs
-// }
-
-// func ConfLogger(bs *conf.Bootstrap) klog.Logger {
-// 	return InitLogger(bs, middleware.EntryTest, bs.General.Logger.FilenameTest)
-// }
-
-func InitConfig(c context.Context, path string) (cfg *config.Config, cleanup func(), err error) {
+func InitConfig(c context.Context) (cfg *config.Config, cleanup func(), err error) {
 
 	// Resolve relative path to absolute by walking up to go.mod.
-	if !filepath.IsAbs(path) {
+	if !filepath.IsAbs(ConfigPath) {
 		if dir, e := os.Getwd(); e == nil {
 			for {
 				if _, e := os.Stat(filepath.Join(dir, "go.mod")); e == nil {
-					path = filepath.Join(dir, path)
+					ConfigPath = filepath.Join(dir, ConfigPath)
 					break
 				}
 				parent := filepath.Dir(dir)
@@ -71,7 +49,7 @@ func InitConfig(c context.Context, path string) (cfg *config.Config, cleanup fun
 	}
 
 	config.Cfg = &config.Config{}
-	watcher := fp.New(path)
+	watcher := fp.New(ConfigPath)
 	cleanup = func() {
 		watcher.Close()
 	}
@@ -89,12 +67,12 @@ func InitConfig(c context.Context, path string) (cfg *config.Config, cleanup fun
 	return
 }
 
-func InitLogger(cfg *config.Config, entry Entry) (log logger.Logger, cleanup func(), err error) {
+func InitLogger(cfg *config.Config) (log logger.Logger, cleanup func(), err error) {
 	l := slog.New(
 		slog.WithWriter(
 			lumberjack.New(
 				lumberjack.WithFilename(
-					strings.NewReplacer("{entry}", string(entry)).Replace(cfg.ConfigGeneral.General.Logger.Filename.Load().(string)),
+					strings.NewReplacer("{entry}", cfg.General.Entry.Load().(string)).Replace(cfg.ConfigGeneral.General.Logger.Filename.Load().(string)),
 				),
 				lumberjack.WithMaxBackups(int(cfg.ConfigGeneral.General.Logger.MaxBackup.Load())),
 				lumberjack.WithMaxSize(int(cfg.ConfigGeneral.General.Logger.MaxSize.Load())),
@@ -104,7 +82,7 @@ func InitLogger(cfg *config.Config, entry Entry) (log logger.Logger, cleanup fun
 			"env", cfg.ConfigGeneral.General.Env.Load().(string),
 			"name", cfg.ConfigGeneral.General.Name.Load().(string),
 			"version", cfg.ConfigGeneral.General.Version.Load().(string),
-			"entry", string(entry),
+			"entry", string(cfg.General.Entry.Load().(string)),
 		),
 		slog.WithLevel(cfg.ConfigGeneral.General.Logger.Level.Load().(string)),
 		// slog.WithContextParam(cp, sp),

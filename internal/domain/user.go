@@ -10,12 +10,12 @@ import (
 )
 
 type UserDomain struct {
-	tx   repo.TransactionUserRepo
+	tx   repo.TransactionDefaultRepo
 	user repo.UserRepo
 }
 
 func NewUserDomain(
-	tx repo.TransactionUserRepo,
+	tx repo.TransactionDefaultRepo,
 	user repo.UserRepo,
 ) *UserDomain {
 	return &UserDomain{

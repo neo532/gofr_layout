@@ -2,6 +2,7 @@ general:
   ip: "-"
   env: dev
   version: "-"
+  entry: "-"
   name: github.com/neo532/gofr_layout
   logger:
     level: debug

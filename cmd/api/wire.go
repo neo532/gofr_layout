@@ -6,22 +6,18 @@
 package main
 
 import (
-	"context"
-
 	"github.com/google/wire"
 	"github.com/neo532/gofr"
-	"github.com/neo532/gofr_layout/internal/config"
+	"github.com/neo532/gofr_layout/cmd"
 	"github.com/neo532/gofr_layout/internal/server"
-	"github.com/neo532/gokit/logger"
 )
 
-func initApp(
-	context.Context,
-	*config.Config,
-	logger.Logger,
-) (*gofr.App, func(), error) {
+func initApp() (*gofr.App, func(), error) {
 	panic(wire.Build(
+		cmd.ProviderSet,
+
 		server.NewApi,
+
 		newApp,
 	))
 }

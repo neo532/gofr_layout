@@ -18,6 +18,7 @@ type GeneralLoggerCfg struct {
 }
 
 type GeneralCfg struct {
+	Entry atomic.Value `yaml:"entry"` // string
 	Env atomic.Value `yaml:"env"` // string
 	Ip atomic.Value `yaml:"ip"` // string
 	Logger GeneralLoggerCfg `yaml:"logger"` // GeneralLoggerCfg
@@ -91,6 +92,12 @@ func loadGeneralLoggerCfg(raw map[string]any, c *GeneralLoggerCfg) {
 func loadGeneralCfg(raw map[string]any, c *GeneralCfg) {
 	for k, v := range raw {
 		switch k {
+		case "entry":
+			if v != nil {
+				c.Entry.Store(v)
+			} else {
+				c.Entry.Store("")
+			}
 		case "env":
 			if v != nil {
 				c.Env.Store(v)

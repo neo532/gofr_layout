@@ -7,19 +7,22 @@
 package main
 
 import (
-	"context"
-
 	"github.com/neo532/gofr"
-	"github.com/neo532/gofr_layout/internal/config"
+	"github.com/neo532/gofr_layout/cmd"
 	"github.com/neo532/gofr_layout/internal/server"
-	"github.com/neo532/gokit/logger"
 )
 
 // Injectors from wire.go:
 
-func initApp(contextContext context.Context, configConfig *config.Config, loggerLogger logger.Logger) (*gofr.App, func(), error) {
-	v := server.NewApi(configConfig)
-	app := newApp(contextContext, configConfig, v...)
+func initApp() (*gofr.App, func(), error) {
+	context := cmd.BootContext()
+	config, cleanup, err := cmd.InitConfig(context)
+	if err != nil {
+		return nil, nil, err
+	}
+	v := server.NewApi(config)
+	app := newApp(context, config, v...)
 	return app, func() {
+		cleanup()
 	}, nil
 }

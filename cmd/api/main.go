@@ -28,6 +28,8 @@ func newApp(
 	srvs ...transport.Server,
 ) *gofr.App {
 
+	config.Cfg.General.Version.Store(Version)
+
 	return gofr.New(
 		gofr.ID(cfg.General.Ip.Load().(string)),
 		gofr.Name(cfg.General.Name.Load().(string)),
@@ -41,29 +43,10 @@ func newApp(
 func main() {
 	flag.Parse()
 
-	ctx := cmd.BootContext()
-
-	// config
-	cfg, closeCfg, err := cmd.InitConfig(ctx, flagConf)
-	if err != nil {
-		panic(err)
-	}
-	defer closeCfg()
-	cfg.General.Version.Store(Version)
-
-	// log
-	log, closeLog, err := cmd.InitLogger(cfg, cmd.EntryApi)
-	if err != nil {
-		panic(err)
-	}
-	defer closeLog()
+	cmd.ConfigPath = flagConf
 
 	// app
-	app, cleanup, err := initApp(
-		ctx,
-		cfg,
-		log,
-	)
+	app, cleanup, err := initApp()
 	if err != nil {
 		panic(err)
 	}

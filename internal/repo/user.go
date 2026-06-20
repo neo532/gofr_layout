@@ -6,7 +6,7 @@ import (
 	pb "github.com/neo532/gofr_layout/proto/api/user/v1"
 )
 
-type TransactionUserRepo interface {
+type TransactionDefaultRepo interface {
 	Transaction(c context.Context, fn func(c context.Context) (err error)) (err error)
 }
 

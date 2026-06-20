@@ -102,10 +102,10 @@ The server starts at the address configured in `configs/server.yaml` (default `:
 
 The example proto defines:
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/user` | Create a user |
-| GET | `/user/{id}` | Get user by ID |
+| Method | Path           | Description    |
+| ------ | -------------- | -------------- |
+| POST   | `/user`      | Create a user  |
+| GET    | `/user/{id}` | Get user by ID |
 
 ```bash
 curl http://127.0.0.1:8000/user \
@@ -198,18 +198,18 @@ http.RegisterCodec("xml", &http.Codec{
 
 ## Makefile Targets
 
-| Target | Description |
-|--------|-------------|
-| `init` | Install dev tools (wire, fswatch, config-gen) |
-| `config` | Generate config structs from YAML |
-| `generate` | Run wire and go:generate |
-| `build` | Build all entrypoints |
-| `buildApi` | Build api server binary |
-| `buildConsumer` | Build consumer binary |
-| `buildScript` | Build script binary |
-| `runApi` | Start api server with hot-reload |
-| `runConsumer` | Start consumer with hot-reload |
-| `runScript` | Start script with hot-reload |
+| Target            | Description                                   |
+| ----------------- | --------------------------------------------- |
+| `init`          | Install dev tools (wire, fswatch, config-gen) |
+| `config`        | Generate config structs from YAML             |
+| `generate`      | Run wire and go:generate                      |
+| `build`         | Build all entrypoints                         |
+| `buildApi`      | Build api server binary                       |
+| `buildConsumer` | Build consumer binary                         |
+| `buildScript`   | Build script binary                           |
+| `runApi`        | Start api server with hot-reload              |
+| `runConsumer`   | Start consumer with hot-reload                |
+| `runScript`     | Start script with hot-reload                  |
 
 ## Go Workspace
 
