@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package user.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+import "api/user/v1/struct.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/neo532/gofr_layout/proto/api/user/v1;v1";
+
+service UserApi {
+
+	rpc Post (User) returns (google.protobuf.Empty){
+        option (google.api.http)={
+            post: "/user"
+            body: "*"
+        };
+    };
+
+	rpc GetById (GetByIdRequest) returns (User){
+        option (google.api.http)={
+            get: "/user/{id}"
+        };
+    };
+}
+
+
+message GetByIdRequest {
+    int64 id = 1 [(validate.rules).int64 = {gt:0}];
+}
+
+service UserApi1 {
+
+	rpc Post (User) returns (google.protobuf.Empty){
+        option (google.api.http)={
+            post: "/user1"
+            body: "*"
+        };
+    };
+
+	rpc GetById (GetByIdRequest) returns (User){
+        option (google.api.http)={
+            get: "/user1/{id}"
+        };
+    };
+}

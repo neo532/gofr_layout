@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package v1;
+
+option go_package = "github.com/neo532/gofr_layout/proto/api/v1;v1";
+
+enum ErrCode {
+	OK                   = 0;
+
+	BadRequest                   = 400;
+	Unauthorized                 = 401;
+	Forbidden                    = 403;
+	NotFound                     = 404;
+	RequestTimeout               = 408;
+	Conflict                     = 409;
+	Gone                         = 410;
+	RequestEntityTooLarge        = 413;
+	RequestURITooLong            = 414;
+	TooManyRequests              = 429;
+
+	InternalServerError           = 500;
+	NotImplemented                = 501;
+	BadGateway                    = 502;
+	ServiceUnavailable            = 503;
+	GatewayTimeout                = 504;
+
+    UserLoginExpired              = 100000;
+}

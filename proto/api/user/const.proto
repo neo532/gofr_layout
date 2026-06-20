@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "github.com/neo532/gofr_layout/proto/api/user;user";
+
+enum UserStatus {
+    NULL = 0;
+    ACTIVE = 1;
+    Freeze = 2;
+    DELETE = 3;
+}
