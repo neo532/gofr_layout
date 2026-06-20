@@ -14,19 +14,10 @@ import (
 	"github.com/neo532/gokit/logger/writer/lumberjack"
 )
 
-type (
-	Entry string
-)
-
-const (
-	EntryApi      = "api"
-	EntryScript   = "script"
-	EntryConsumer = "consumer"
-)
-
 var (
 	ProviderSet = wire.NewSet(BootContext, InitConfig, InitLogger)
 	ConfigPath  = "./configs/"
+	Entry       = "-"
 )
 
 func InitConfig() (cfg *config.Config, cleanup func(), err error) {
@@ -68,6 +59,9 @@ func InitConfig() (cfg *config.Config, cleanup func(), err error) {
 }
 
 func InitLogger(cfg *config.Config) (log logger.Logger, cleanup func(), err error) {
+
+	cfg.General.Entry.Store(Entry)
+
 	l := slog.New(
 		slog.WithWriter(
 			lumberjack.New(

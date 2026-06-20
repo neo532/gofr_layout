@@ -18,6 +18,7 @@ var (
 
 func init() {
 	flag.StringVar(&cmd.ConfigPath, "conf", cmd.ConfigPath, "config path, eg: -conf configs")
+	cmd.Entry = "api"
 }
 
 func newApp(
