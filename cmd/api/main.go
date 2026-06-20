@@ -14,12 +14,10 @@ import (
 var (
 	// Version is the version of the compiled software.
 	Version string
-	// flagconf is the config flag.
-	flagConf string
 )
 
 func init() {
-	flag.StringVar(&flagConf, "conf", "./configs/", "config path, eg: -conf configs")
+	flag.StringVar(&cmd.ConfigPath, "conf", cmd.ConfigPath, "config path, eg: -conf configs")
 }
 
 func newApp(
@@ -42,8 +40,6 @@ func newApp(
 
 func main() {
 	flag.Parse()
-
-	cmd.ConfigPath = flagConf
 
 	// app
 	app, cleanup, err := initApp()

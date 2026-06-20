@@ -18,7 +18,7 @@ import (
 
 func UserApiService() (*api.UserApiService, func(), error) {
 	context := cmd.BootContext()
-	config, cleanup, err := cmd.InitConfig(context)
+	config, cleanup, err := cmd.InitConfig()
 	if err != nil {
 		return nil, nil, err
 	}

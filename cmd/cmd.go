@@ -29,7 +29,7 @@ var (
 	ConfigPath  = "./configs/"
 )
 
-func InitConfig(c context.Context) (cfg *config.Config, cleanup func(), err error) {
+func InitConfig() (cfg *config.Config, cleanup func(), err error) {
 
 	// Resolve relative path to absolute by walking up to go.mod.
 	if !filepath.IsAbs(ConfigPath) {
