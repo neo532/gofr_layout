@@ -5,25 +5,31 @@ import (
 
 	"github.com/neo532/gofr_layout/internal/domain"
 	pb "github.com/neo532/gofr_layout/proto/api/user/v1"
+	"github.com/neo532/gokit/logger"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-// UserApiService implements pb.UserApiService.
-type UserApiService struct {
-	dn *domain.UserDomain
+// UserApi implements pb.UserApi.
+type UserApi struct {
+	dn  *domain.UserDomain
+	log logger.Logger
 }
 
-func NewUserApiService(
+func NewUserApi(
 	dn *domain.UserDomain,
-) *UserApiService {
-	return &UserApiService{
-		dn: dn,
+	log logger.Logger,
+) *UserApi {
+	return &UserApi{
+		dn:  dn,
+		log: log,
 	}
 }
 
-func (s *UserApiService) Post(ctx context.Context, req *pb.User) (*pb.User, error) {
-	return req, nil
+func (s *UserApi) Post(c context.Context, req *pb.User) (r *emptypb.Empty, err error) {
+	err = s.dn.Create(c, req)
+	return
 }
 
-func (s *UserApiService) GetById(ctx context.Context, req *pb.GetByIdRequest) (*pb.User, error) {
-	return s.dn.GetById(ctx, req.Id)
+func (s *UserApi) GetById(c context.Context, req *pb.GetByIdRequest) (*pb.User, error) {
+	return s.dn.GetById(c, req.Id)
 }

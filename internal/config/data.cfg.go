@@ -8,11 +8,49 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type DataDatabaseBizCfg struct {
-	DatabaseConf DataDatabaseConfCfg `yaml:"_database_conf"` // DataDatabaseConfCfg
+type DataConsumerDefaultCfg struct {
+	Addrs atomic.Value `yaml:"addrs"` // []string
+	Group atomic.Value `yaml:"group"` // string
+	Name atomic.Value `yaml:"name"` // string
+	Topics atomic.Value `yaml:"topics"` // []string
+}
+
+type DataConsumerGrayCfg struct {
+	Addrs atomic.Value `yaml:"addrs"` // []string
+	Group atomic.Value `yaml:"group"` // string
+	Name atomic.Value `yaml:"name"` // string
+	Topics atomic.Value `yaml:"topics"` // []string
+}
+
+type DataConsumerShadowCfg struct {
+	Addrs atomic.Value `yaml:"addrs"` // []string
+	Group atomic.Value `yaml:"group"` // string
+	Name atomic.Value `yaml:"name"` // string
+	Topics atomic.Value `yaml:"topics"` // []string
+}
+
+type DataConsumerConfCfg struct {
+	ConsumerDefault DataConsumerDefaultCfg `yaml:"_consumer_default"` // DataConsumerDefaultCfg
+	ConsumerGray DataConsumerGrayCfg `yaml:"_consumer_gray"` // DataConsumerGrayCfg
+	ConsumerShadow DataConsumerShadowCfg `yaml:"_consumer_shadow"` // DataConsumerShadowCfg
+	MaxSlowtime atomic.Value `yaml:"max_slowtime"` // float64
+}
+
+type DataConsumerUserCfg struct {
+	ConsumerConf DataConsumerConfCfg `yaml:"_consumer_conf"` // DataConsumerConfCfg
 }
 
 type DataDatabaseReadCfg struct {
+	Dsn atomic.Value `yaml:"dsn"` // string
+	Name atomic.Value `yaml:"name"` // string
+}
+
+type DataDatabaseShadowReadCfg struct {
+	Dsn atomic.Value `yaml:"dsn"` // string
+	Name atomic.Value `yaml:"name"` // string
+}
+
+type DataDatabaseShadowWriteCfg struct {
 	Dsn atomic.Value `yaml:"dsn"` // string
 	Name atomic.Value `yaml:"name"` // string
 }
@@ -24,6 +62,8 @@ type DataDatabaseWriteCfg struct {
 
 type DataDatabaseConfCfg struct {
 	DatabaseRead DataDatabaseReadCfg `yaml:"_database_read"` // DataDatabaseReadCfg
+	DatabaseShadowRead DataDatabaseShadowReadCfg `yaml:"_database_shadow_read"` // DataDatabaseShadowReadCfg
+	DatabaseShadowWrite DataDatabaseShadowWriteCfg `yaml:"_database_shadow_write"` // DataDatabaseShadowWriteCfg
 	DatabaseWrite DataDatabaseWriteCfg `yaml:"_database_write"` // DataDatabaseWriteCfg
 	ConnMaxLifetime atomic.Int64 `yaml:"conn_max_lifetime"` // int64
 	MaxIdleConns atomic.Int64 `yaml:"max_idle_conns"` // int64
@@ -32,8 +72,40 @@ type DataDatabaseConfCfg struct {
 	TablePrefix atomic.Value `yaml:"table_prefix"` // string
 }
 
-type DataDatabaseDefaultCfg struct {
+type DataDatabaseBizCfg struct {
 	DatabaseConf DataDatabaseConfCfg `yaml:"_database_conf"` // DataDatabaseConfCfg
+}
+
+type DataDatabaseUserCfg struct {
+	DatabaseConf DataDatabaseConfCfg `yaml:"_database_conf"` // DataDatabaseConfCfg
+}
+
+type DataProducerDefaultCfg struct {
+	Addrs atomic.Value `yaml:"addrs"` // []string
+	Name atomic.Value `yaml:"name"` // string
+	Topic atomic.Value `yaml:"topic"` // string
+}
+
+type DataProducerGrayCfg struct {
+	Addrs atomic.Value `yaml:"addrs"` // []string
+	Name atomic.Value `yaml:"name"` // string
+	Topic atomic.Value `yaml:"topic"` // string
+}
+
+type DataProducerShadowCfg struct {
+	Addrs atomic.Value `yaml:"addrs"` // []string
+	Name atomic.Value `yaml:"name"` // string
+	Topic atomic.Value `yaml:"topic"` // string
+}
+
+type DataProducerConfCfg struct {
+	ProducerDefault DataProducerDefaultCfg `yaml:"_producer_default"` // DataProducerDefaultCfg
+	ProducerGray DataProducerGrayCfg `yaml:"_producer_gray"` // DataProducerGrayCfg
+	ProducerShadow DataProducerShadowCfg `yaml:"_producer_shadow"` // DataProducerShadowCfg
+}
+
+type DataProducerUserCfg struct {
+	ProducerConf DataProducerConfCfg `yaml:"_producer_conf"` // DataProducerConfCfg
 }
 
 type DataRedisDefaultCfg struct {
@@ -43,8 +115,24 @@ type DataRedisDefaultCfg struct {
 	Password atomic.Value `yaml:"password"` // string
 }
 
+type DataRedisGrayCfg struct {
+	Addr atomic.Value `yaml:"addr"` // string
+	Db atomic.Int64 `yaml:"db"` // int64
+	Name atomic.Value `yaml:"name"` // string
+	Password atomic.Value `yaml:"password"` // string
+}
+
+type DataRedisShadowCfg struct {
+	Addr atomic.Value `yaml:"addr"` // string
+	Db atomic.Int64 `yaml:"db"` // int64
+	Name atomic.Value `yaml:"name"` // string
+	Password atomic.Value `yaml:"password"` // string
+}
+
 type DataRedisConfCfg struct {
 	RedisDefault DataRedisDefaultCfg `yaml:"_redis_default"` // DataRedisDefaultCfg
+	RedisGray DataRedisGrayCfg `yaml:"_redis_gray"` // DataRedisGrayCfg
+	RedisShadow DataRedisShadowCfg `yaml:"_redis_shadow"` // DataRedisShadowCfg
 	MaxSlowtime atomic.Value `yaml:"max_slowtime"` // float64
 }
 
@@ -53,8 +141,10 @@ type DataRedisLockCfg struct {
 }
 
 type DataCfg struct {
+	ConsumerUser DataConsumerUserCfg `yaml:"consumer_user"` // DataConsumerUserCfg
 	DatabaseBiz DataDatabaseBizCfg `yaml:"database_biz"` // DataDatabaseBizCfg
-	DatabaseDefault DataDatabaseDefaultCfg `yaml:"database_default"` // DataDatabaseDefaultCfg
+	DatabaseUser DataDatabaseUserCfg `yaml:"database_user"` // DataDatabaseUserCfg
+	ProducerUser DataProducerUserCfg `yaml:"producer_user"` // DataProducerUserCfg
 	RedisLock DataRedisLockCfg `yaml:"redis_lock"` // DataRedisLockCfg
 }
 
@@ -77,18 +167,174 @@ func LoadData(data []byte, c *ConfigData) error {
 	return nil
 }
 
-func loadDataDatabaseBizCfg(raw map[string]any, c *DataDatabaseBizCfg) {
+func loadDataConsumerDefaultCfg(raw map[string]any, c *DataConsumerDefaultCfg) {
 	for k, v := range raw {
 		switch k {
-		case "_database_conf":
+		case "addrs":
+			if v != nil {
+				c.Addrs.Store(v)
+			} else {
+				c.Addrs.Store("")
+			}
+		case "group":
+			if v != nil {
+				c.Group.Store(v)
+			} else {
+				c.Group.Store("")
+			}
+		case "name":
+			if v != nil {
+				c.Name.Store(v)
+			} else {
+				c.Name.Store("")
+			}
+		case "topics":
+			if v != nil {
+				c.Topics.Store(v)
+			} else {
+				c.Topics.Store("")
+			}
+		}
+	}
+}
+
+func loadDataConsumerGrayCfg(raw map[string]any, c *DataConsumerGrayCfg) {
+	for k, v := range raw {
+		switch k {
+		case "addrs":
+			if v != nil {
+				c.Addrs.Store(v)
+			} else {
+				c.Addrs.Store("")
+			}
+		case "group":
+			if v != nil {
+				c.Group.Store(v)
+			} else {
+				c.Group.Store("")
+			}
+		case "name":
+			if v != nil {
+				c.Name.Store(v)
+			} else {
+				c.Name.Store("")
+			}
+		case "topics":
+			if v != nil {
+				c.Topics.Store(v)
+			} else {
+				c.Topics.Store("")
+			}
+		}
+	}
+}
+
+func loadDataConsumerShadowCfg(raw map[string]any, c *DataConsumerShadowCfg) {
+	for k, v := range raw {
+		switch k {
+		case "addrs":
+			if v != nil {
+				c.Addrs.Store(v)
+			} else {
+				c.Addrs.Store("")
+			}
+		case "group":
+			if v != nil {
+				c.Group.Store(v)
+			} else {
+				c.Group.Store("")
+			}
+		case "name":
+			if v != nil {
+				c.Name.Store(v)
+			} else {
+				c.Name.Store("")
+			}
+		case "topics":
+			if v != nil {
+				c.Topics.Store(v)
+			} else {
+				c.Topics.Store("")
+			}
+		}
+	}
+}
+
+func loadDataConsumerConfCfg(raw map[string]any, c *DataConsumerConfCfg) {
+	for k, v := range raw {
+		switch k {
+		case "_consumer_default":
 			if m, ok := v.(map[string]any); ok {
-				loadDataDatabaseConfCfg(m, &c.DatabaseConf)
+				loadDataConsumerDefaultCfg(m, &c.ConsumerDefault)
+			}
+		case "_consumer_gray":
+			if m, ok := v.(map[string]any); ok {
+				loadDataConsumerGrayCfg(m, &c.ConsumerGray)
+			}
+		case "_consumer_shadow":
+			if m, ok := v.(map[string]any); ok {
+				loadDataConsumerShadowCfg(m, &c.ConsumerShadow)
+			}
+		case "max_slowtime":
+			if v != nil {
+				c.MaxSlowtime.Store(v)
+			} else {
+				c.MaxSlowtime.Store("")
+			}
+		}
+	}
+}
+
+func loadDataConsumerUserCfg(raw map[string]any, c *DataConsumerUserCfg) {
+	for k, v := range raw {
+		switch k {
+		case "_consumer_conf":
+			if m, ok := v.(map[string]any); ok {
+				loadDataConsumerConfCfg(m, &c.ConsumerConf)
 			}
 		}
 	}
 }
 
 func loadDataDatabaseReadCfg(raw map[string]any, c *DataDatabaseReadCfg) {
+	for k, v := range raw {
+		switch k {
+		case "dsn":
+			if v != nil {
+				c.Dsn.Store(v)
+			} else {
+				c.Dsn.Store("")
+			}
+		case "name":
+			if v != nil {
+				c.Name.Store(v)
+			} else {
+				c.Name.Store("")
+			}
+		}
+	}
+}
+
+func loadDataDatabaseShadowReadCfg(raw map[string]any, c *DataDatabaseShadowReadCfg) {
+	for k, v := range raw {
+		switch k {
+		case "dsn":
+			if v != nil {
+				c.Dsn.Store(v)
+			} else {
+				c.Dsn.Store("")
+			}
+		case "name":
+			if v != nil {
+				c.Name.Store(v)
+			} else {
+				c.Name.Store("")
+			}
+		}
+	}
+}
+
+func loadDataDatabaseShadowWriteCfg(raw map[string]any, c *DataDatabaseShadowWriteCfg) {
 	for k, v := range raw {
 		switch k {
 		case "dsn":
@@ -133,6 +379,14 @@ func loadDataDatabaseConfCfg(raw map[string]any, c *DataDatabaseConfCfg) {
 			if m, ok := v.(map[string]any); ok {
 				loadDataDatabaseReadCfg(m, &c.DatabaseRead)
 			}
+		case "_database_shadow_read":
+			if m, ok := v.(map[string]any); ok {
+				loadDataDatabaseShadowReadCfg(m, &c.DatabaseShadowRead)
+			}
+		case "_database_shadow_write":
+			if m, ok := v.(map[string]any); ok {
+				loadDataDatabaseShadowWriteCfg(m, &c.DatabaseShadowWrite)
+			}
 		case "_database_write":
 			if m, ok := v.(map[string]any); ok {
 				loadDataDatabaseWriteCfg(m, &c.DatabaseWrite)
@@ -174,7 +428,7 @@ func loadDataDatabaseConfCfg(raw map[string]any, c *DataDatabaseConfCfg) {
 	}
 }
 
-func loadDataDatabaseDefaultCfg(raw map[string]any, c *DataDatabaseDefaultCfg) {
+func loadDataDatabaseBizCfg(raw map[string]any, c *DataDatabaseBizCfg) {
 	for k, v := range raw {
 		switch k {
 		case "_database_conf":
@@ -185,7 +439,187 @@ func loadDataDatabaseDefaultCfg(raw map[string]any, c *DataDatabaseDefaultCfg) {
 	}
 }
 
+func loadDataDatabaseUserCfg(raw map[string]any, c *DataDatabaseUserCfg) {
+	for k, v := range raw {
+		switch k {
+		case "_database_conf":
+			if m, ok := v.(map[string]any); ok {
+				loadDataDatabaseConfCfg(m, &c.DatabaseConf)
+			}
+		}
+	}
+}
+
+func loadDataProducerDefaultCfg(raw map[string]any, c *DataProducerDefaultCfg) {
+	for k, v := range raw {
+		switch k {
+		case "addrs":
+			if v != nil {
+				c.Addrs.Store(v)
+			} else {
+				c.Addrs.Store("")
+			}
+		case "name":
+			if v != nil {
+				c.Name.Store(v)
+			} else {
+				c.Name.Store("")
+			}
+		case "topic":
+			if v != nil {
+				c.Topic.Store(v)
+			} else {
+				c.Topic.Store("")
+			}
+		}
+	}
+}
+
+func loadDataProducerGrayCfg(raw map[string]any, c *DataProducerGrayCfg) {
+	for k, v := range raw {
+		switch k {
+		case "addrs":
+			if v != nil {
+				c.Addrs.Store(v)
+			} else {
+				c.Addrs.Store("")
+			}
+		case "name":
+			if v != nil {
+				c.Name.Store(v)
+			} else {
+				c.Name.Store("")
+			}
+		case "topic":
+			if v != nil {
+				c.Topic.Store(v)
+			} else {
+				c.Topic.Store("")
+			}
+		}
+	}
+}
+
+func loadDataProducerShadowCfg(raw map[string]any, c *DataProducerShadowCfg) {
+	for k, v := range raw {
+		switch k {
+		case "addrs":
+			if v != nil {
+				c.Addrs.Store(v)
+			} else {
+				c.Addrs.Store("")
+			}
+		case "name":
+			if v != nil {
+				c.Name.Store(v)
+			} else {
+				c.Name.Store("")
+			}
+		case "topic":
+			if v != nil {
+				c.Topic.Store(v)
+			} else {
+				c.Topic.Store("")
+			}
+		}
+	}
+}
+
+func loadDataProducerConfCfg(raw map[string]any, c *DataProducerConfCfg) {
+	for k, v := range raw {
+		switch k {
+		case "_producer_default":
+			if m, ok := v.(map[string]any); ok {
+				loadDataProducerDefaultCfg(m, &c.ProducerDefault)
+			}
+		case "_producer_gray":
+			if m, ok := v.(map[string]any); ok {
+				loadDataProducerGrayCfg(m, &c.ProducerGray)
+			}
+		case "_producer_shadow":
+			if m, ok := v.(map[string]any); ok {
+				loadDataProducerShadowCfg(m, &c.ProducerShadow)
+			}
+		}
+	}
+}
+
+func loadDataProducerUserCfg(raw map[string]any, c *DataProducerUserCfg) {
+	for k, v := range raw {
+		switch k {
+		case "_producer_conf":
+			if m, ok := v.(map[string]any); ok {
+				loadDataProducerConfCfg(m, &c.ProducerConf)
+			}
+		}
+	}
+}
+
 func loadDataRedisDefaultCfg(raw map[string]any, c *DataRedisDefaultCfg) {
+	for k, v := range raw {
+		switch k {
+		case "addr":
+			if v != nil {
+				c.Addr.Store(v)
+			} else {
+				c.Addr.Store("")
+			}
+		case "db":
+			switch n := v.(type) {
+			case int:
+				c.Db.Store(int64(n))
+			case int64:
+				c.Db.Store(n)
+			}
+		case "name":
+			if v != nil {
+				c.Name.Store(v)
+			} else {
+				c.Name.Store("")
+			}
+		case "password":
+			if v != nil {
+				c.Password.Store(v)
+			} else {
+				c.Password.Store("")
+			}
+		}
+	}
+}
+
+func loadDataRedisGrayCfg(raw map[string]any, c *DataRedisGrayCfg) {
+	for k, v := range raw {
+		switch k {
+		case "addr":
+			if v != nil {
+				c.Addr.Store(v)
+			} else {
+				c.Addr.Store("")
+			}
+		case "db":
+			switch n := v.(type) {
+			case int:
+				c.Db.Store(int64(n))
+			case int64:
+				c.Db.Store(n)
+			}
+		case "name":
+			if v != nil {
+				c.Name.Store(v)
+			} else {
+				c.Name.Store("")
+			}
+		case "password":
+			if v != nil {
+				c.Password.Store(v)
+			} else {
+				c.Password.Store("")
+			}
+		}
+	}
+}
+
+func loadDataRedisShadowCfg(raw map[string]any, c *DataRedisShadowCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
@@ -224,6 +658,14 @@ func loadDataRedisConfCfg(raw map[string]any, c *DataRedisConfCfg) {
 			if m, ok := v.(map[string]any); ok {
 				loadDataRedisDefaultCfg(m, &c.RedisDefault)
 			}
+		case "_redis_gray":
+			if m, ok := v.(map[string]any); ok {
+				loadDataRedisGrayCfg(m, &c.RedisGray)
+			}
+		case "_redis_shadow":
+			if m, ok := v.(map[string]any); ok {
+				loadDataRedisShadowCfg(m, &c.RedisShadow)
+			}
 		case "max_slowtime":
 			if v != nil {
 				c.MaxSlowtime.Store(v)
@@ -248,13 +690,21 @@ func loadDataRedisLockCfg(raw map[string]any, c *DataRedisLockCfg) {
 func loadDataCfg(raw map[string]any, c *DataCfg) {
 	for k, v := range raw {
 		switch k {
+		case "consumer_user":
+			if m, ok := v.(map[string]any); ok {
+				loadDataConsumerUserCfg(m, &c.ConsumerUser)
+			}
 		case "database_biz":
 			if m, ok := v.(map[string]any); ok {
 				loadDataDatabaseBizCfg(m, &c.DatabaseBiz)
 			}
-		case "database_default":
+		case "database_user":
 			if m, ok := v.(map[string]any); ok {
-				loadDataDatabaseDefaultCfg(m, &c.DatabaseDefault)
+				loadDataDatabaseUserCfg(m, &c.DatabaseUser)
+			}
+		case "producer_user":
+			if m, ok := v.(map[string]any); ok {
+				loadDataProducerUserCfg(m, &c.ProducerUser)
 			}
 		case "redis_lock":
 			if m, ok := v.(map[string]any); ok {

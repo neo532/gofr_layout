@@ -9,16 +9,16 @@ package test
 import (
 	"github.com/neo532/gofr_layout/cmd"
 	"github.com/neo532/gofr_layout/internal/data"
-	"github.com/neo532/gofr_layout/internal/data/base"
+	"github.com/neo532/gofr_layout/internal/data/connect"
 	"github.com/neo532/gofr_layout/internal/domain"
 	"github.com/neo532/gofr_layout/internal/service/api"
 )
 
 // Injectors from wire.go:
 
-func UserApiService() (*api.UserApiService, func(), error) {
+func UserApi() (*api.UserApi, func(), error) {
 	context := cmd.BootContext()
-	config, cleanup, err := cmd.InitConfig()
+	config, cleanup, err := cmd.InitConfig(context)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -27,17 +27,26 @@ func UserApiService() (*api.UserApiService, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
-	databaseDefault, cleanup3, err := base.NewDatabaseDefault(context, config, logger)
+	wireFieldsOfDatabaseUserSet, cleanup3, err := connect.NewDatabaseUser(context, config, logger)
 	if err != nil {
 		cleanup2()
 		cleanup()
 		return nil, nil, err
 	}
-	transactionDefaultRepo := data.NewTransactionDefaultRepo(databaseDefault)
-	userRepo := data.NewUserRepo(databaseDefault)
-	userDomain := domain.NewUserDomain(transactionDefaultRepo, userRepo)
-	userApiService := api.NewUserApiService(userDomain)
-	return userApiService, func() {
+	transactionUser := wireFieldsOfDatabaseUserSet.TX
+	databaseUser := wireFieldsOfDatabaseUserSet.DB
+	userRepo := data.NewUserRepo(databaseUser)
+	producerUser, cleanup4, err := connect.NewProducerDefault(context, config, logger)
+	if err != nil {
+		cleanup3()
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
+	userDomain := domain.NewUserDomain(transactionUser, userRepo, producerUser)
+	userApi := api.NewUserApi(userDomain, logger)
+	return userApi, func() {
+		cleanup4()
 		cleanup3()
 		cleanup2()
 		cleanup()

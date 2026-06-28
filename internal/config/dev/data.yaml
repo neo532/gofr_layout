@@ -1,6 +1,6 @@
 
 data:
-  database_default:
+  database_user:
     _database_conf:
       max_open_conns: 2
       max_idle_conns: 2
@@ -26,8 +26,12 @@ data:
       _database_write:
         name: "default_write"
         dsn: root:12345678@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=true&loc=Local
-
-
+      _database_shadow_read:
+        name: "default_read"
+        dsn: root:12345678@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=true&loc=Local
+      _database_shadow_write:
+        name: "default_write"
+        dsn: root:12345678@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=true&loc=Local
 
   redis_lock:
     _redis_conf:
@@ -37,3 +41,49 @@ data:
         db: 0
         addr: test.domain:6379
         password: password
+      _redis_shadow:
+        name: lock
+        db: 0
+        addr: test.domain:6379
+        password: password
+      _redis_gray:
+        name: lock
+        db: 0
+        addr: test.domain:6379
+        password: password
+
+
+  consumer_user:
+    _consumer_conf:
+      max_slowtime: 0.5 # seocond
+      _consumer_default:
+        name: user_default
+        group: my-group
+        addrs: [localhost:9092]
+        topics: [message]
+      _consumer_shadow:
+        name: user_shadow
+        group: my-group
+        addrs: [localhost:9092]
+        topics: [message]
+      _consumer_gray:
+        name: user_gray
+        group: my-group
+        addrs: [localhost:9092]
+        topics: [message]
+
+
+  producer_user:
+    _producer_conf:
+      _producer_default:
+        name: user_default
+        addrs: [localhost:9092]
+        topic: message
+      _producer_shadow:
+        name: user_shadow
+        addrs: [localhost:9092]
+        topic: message
+      _producer_gray:
+        name: user_gray
+        addrs: [localhost:9092]
+        topic: message

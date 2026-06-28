@@ -9,16 +9,16 @@ import (
 	"github.com/google/wire"
 	"github.com/neo532/gofr_layout/cmd"
 	"github.com/neo532/gofr_layout/internal/data"
-	"github.com/neo532/gofr_layout/internal/data/base"
+	"github.com/neo532/gofr_layout/internal/data/connect"
 	"github.com/neo532/gofr_layout/internal/domain"
 	"github.com/neo532/gofr_layout/internal/service/api"
 )
 
-func UserApiService() (*api.UserApiService, func(), error) {
+func UserApi() (*api.UserApi, func(), error) {
 	panic(wire.Build(
 		cmd.ProviderSet,
 
-		base.ProviderSet,
+		connect.ProviderSet,
 
 		api.ProviderSet,
 		data.ProviderSet,

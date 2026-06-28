@@ -5,7 +5,7 @@ import (
 	"flag"
 
 	"github.com/neo532/gofr"
-	"github.com/neo532/gofr/transport"
+	"github.com/neo532/gofr/transport/script"
 	"github.com/neo532/gofr_layout/cmd"
 	"github.com/neo532/gofr_layout/internal/config"
 )
@@ -18,14 +18,14 @@ var (
 
 func init() {
 	flag.StringVar(&cmd.ConfigPath, "conf", cmd.ConfigPath, "config path, eg: -conf configs")
-	cmd.Entry = "api"
+	cmd.Entry = "script"
 	cmd.Version = Version
 }
 
 func newApp(
 	c context.Context,
 	cfg *config.Config,
-	srvs ...transport.Server,
+	srv *script.Server,
 ) *gofr.App {
 
 	config.Cfg.General.Version.Store(Version)
@@ -36,7 +36,7 @@ func newApp(
 		gofr.Version(Version),
 		gofr.Metadata(map[string]string{}),
 		gofr.Context(c),
-		gofr.Server(srvs...),
+		gofr.Server(srv),
 	)
 }
 

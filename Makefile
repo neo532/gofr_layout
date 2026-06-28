@@ -30,6 +30,7 @@ init:
 	go get github.com/google/wire/cmd/wire@v0.5.0
 	go install github.com/codeskyblue/fswatch@latest
 	go install github.com/neo532/gokit/cmd/config-gen-go-struct@latest
+	go install github.com/neo532/gokit/cmd/wire-gen-go-provider@latest
 
 
 .PHONY: config
@@ -47,7 +48,7 @@ initConfig:
 .PHONY: generate
 # generate config & wire_gen
 generate:
-	./wireGenerate.sh
+	wire-gen-go-provider
 	GOWORK=off go generate ./cmd/...
 
 

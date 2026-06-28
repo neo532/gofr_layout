@@ -7,14 +7,14 @@ import (
 )
 
 func TestDemo(t *testing.T) {
-	userApiService, _, err := UserApiService()
+	userApi, _, err := UserApi()
 	if err != nil {
 		t.Fatal(err)
 	}
-	if userApiService == nil {
+	if userApi == nil {
 		t.Fatal("UserApiService is nil")
 	}
-	user, err := userApiService.GetById(t.Context(), &pb.GetByIdRequest{Id: 1})
+	user, err := userApi.GetById(t.Context(), &pb.GetByIdRequest{Id: 1})
 	if err != nil {
 		t.Fatal(err)
 	}

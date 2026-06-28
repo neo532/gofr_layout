@@ -3,7 +3,7 @@ package data
 import (
 	"context"
 
-	"github.com/neo532/gofr_layout/internal/data/base"
+	"github.com/neo532/gofr_layout/internal/data/connect"
 	"github.com/neo532/gofr_layout/internal/data/model"
 	"github.com/neo532/gofr_layout/internal/repo"
 	pb "github.com/neo532/gofr_layout/proto/api/user/v1"
@@ -15,7 +15,7 @@ type UserRepo struct {
 }
 
 func NewUserRepo(
-	db base.DatabaseDefault,
+	db connect.DatabaseUser,
 ) repo.UserRepo {
 	return &UserRepo{
 		db: db,
@@ -37,12 +37,25 @@ func (r *UserRepo) Create(c context.Context, d *pb.User) (insID int64, err error
 	return
 }
 
-func (r *UserRepo) GetById(c context.Context, id int64) (rst *pb.User, err error) {
+func (r *UserRepo) Update(c context.Context, ID int64, d *pb.User) (err error) {
+
+	err = r.db.Write(c).
+		WithContext(c).
+		Where("id=?", ID).
+		Updates(&model.User{
+			Name: d.Name,
+		}).
+		Error
+
+	return
+}
+
+func (r *UserRepo) GetById(c context.Context, ID int64) (rst *pb.User, err error) {
 	d := &model.User{}
 	err = r.db.Read(c).
 		WithContext(c).
 		Select("id", "name").
-		Where("id = ?", id).
+		Where("id = ?", ID).
 		Take(d).
 		Error
 	if err != nil {

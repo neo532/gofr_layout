@@ -13,7 +13,7 @@ import (
 	"github.com/neo532/gofr_layout/internal/data/connect"
 	"github.com/neo532/gofr_layout/internal/domain"
 	"github.com/neo532/gofr_layout/internal/server"
-	"github.com/neo532/gofr_layout/internal/service/api"
+	"github.com/neo532/gofr_layout/internal/service/consumer"
 )
 
 // Injectors from wire.go:
@@ -24,10 +24,6 @@ func initApp() (*gofr.App, func(), error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	httpServer := server.NewHttpServer(config)
-	grpcServer := server.NewGrpcServer(config)
-	rpcxServer := server.NewRpcxerver(config)
-	websocketServer := server.NewWebsocket(config)
 	logger, cleanup2, err := cmd.InitLogger(config)
 	if err != nil {
 		cleanup()
@@ -50,10 +46,17 @@ func initApp() (*gofr.App, func(), error) {
 		return nil, nil, err
 	}
 	userDomain := domain.NewUserDomain(transactionUser, userRepo, producerUser)
-	userApi := api.NewUserApi(userDomain, logger)
-	user1Api := api.NewUser1Api(logger)
-	v := server.NewApi(httpServer, grpcServer, rpcxServer, websocketServer, userApi, user1Api)
-	app := newApp(context, config, v...)
+	userConsumer := consumer.NewUserConsumer(userDomain, logger)
+	v := server.NewConsumerRouter(config, userConsumer)
+	queueConsumer, err := server.NewConsumer(context, config, logger, v)
+	if err != nil {
+		cleanup4()
+		cleanup3()
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
+	app := newApp(context, config, queueConsumer)
 	return app, func() {
 		cleanup4()
 		cleanup3()

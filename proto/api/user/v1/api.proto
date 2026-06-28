@@ -30,7 +30,7 @@ message GetByIdRequest {
     int64 id = 1 [(validate.rules).int64 = {gt:0}];
 }
 
-service UserApi1 {
+service User1Api {
 
 	rpc Post (User) returns (google.protobuf.Empty){
         option (google.api.http)={

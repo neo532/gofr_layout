@@ -8,13 +8,31 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+type ServerGrpcCfg struct {
+	Addr atomic.Value `yaml:"addr"` // string
+	Timeout atomic.Int64 `yaml:"timeout"` // int64
+}
+
 type ServerHttpCfg struct {
 	Addr atomic.Value `yaml:"addr"` // string
 	Timeout atomic.Int64 `yaml:"timeout"` // int64
 }
 
+type ServerRpcxCfg struct {
+	Addr atomic.Value `yaml:"addr"` // string
+	Timeout atomic.Int64 `yaml:"timeout"` // int64
+}
+
+type ServerWebsocketCfg struct {
+	Addr atomic.Value `yaml:"addr"` // string
+	Timeout atomic.Int64 `yaml:"timeout"` // int64
+}
+
 type ServerCfg struct {
+	Grpc ServerGrpcCfg `yaml:"grpc"` // ServerGrpcCfg
 	Http ServerHttpCfg `yaml:"http"` // ServerHttpCfg
+	Rpcx ServerRpcxCfg `yaml:"rpcx"` // ServerRpcxCfg
+	Websocket ServerWebsocketCfg `yaml:"websocket"` // ServerWebsocketCfg
 }
 
 type ConfigServer struct {
@@ -34,6 +52,26 @@ func LoadServer(data []byte, c *ConfigServer) error {
 	}
 	loadConfigServer(raw, c)
 	return nil
+}
+
+func loadServerGrpcCfg(raw map[string]any, c *ServerGrpcCfg) {
+	for k, v := range raw {
+		switch k {
+		case "addr":
+			if v != nil {
+				c.Addr.Store(v)
+			} else {
+				c.Addr.Store("")
+			}
+		case "timeout":
+			switch n := v.(type) {
+			case int:
+				c.Timeout.Store(int64(n))
+			case int64:
+				c.Timeout.Store(n)
+			}
+		}
+	}
 }
 
 func loadServerHttpCfg(raw map[string]any, c *ServerHttpCfg) {
@@ -56,12 +94,64 @@ func loadServerHttpCfg(raw map[string]any, c *ServerHttpCfg) {
 	}
 }
 
+func loadServerRpcxCfg(raw map[string]any, c *ServerRpcxCfg) {
+	for k, v := range raw {
+		switch k {
+		case "addr":
+			if v != nil {
+				c.Addr.Store(v)
+			} else {
+				c.Addr.Store("")
+			}
+		case "timeout":
+			switch n := v.(type) {
+			case int:
+				c.Timeout.Store(int64(n))
+			case int64:
+				c.Timeout.Store(n)
+			}
+		}
+	}
+}
+
+func loadServerWebsocketCfg(raw map[string]any, c *ServerWebsocketCfg) {
+	for k, v := range raw {
+		switch k {
+		case "addr":
+			if v != nil {
+				c.Addr.Store(v)
+			} else {
+				c.Addr.Store("")
+			}
+		case "timeout":
+			switch n := v.(type) {
+			case int:
+				c.Timeout.Store(int64(n))
+			case int64:
+				c.Timeout.Store(n)
+			}
+		}
+	}
+}
+
 func loadServerCfg(raw map[string]any, c *ServerCfg) {
 	for k, v := range raw {
 		switch k {
+		case "grpc":
+			if m, ok := v.(map[string]any); ok {
+				loadServerGrpcCfg(m, &c.Grpc)
+			}
 		case "http":
 			if m, ok := v.(map[string]any); ok {
 				loadServerHttpCfg(m, &c.Http)
+			}
+		case "rpcx":
+			if m, ok := v.(map[string]any); ok {
+				loadServerRpcxCfg(m, &c.Rpcx)
+			}
+		case "websocket":
+			if m, ok := v.(map[string]any); ok {
+				loadServerWebsocketCfg(m, &c.Websocket)
 			}
 		}
 	}

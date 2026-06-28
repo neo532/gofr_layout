@@ -2,6 +2,11 @@ go 1.26.1
 
 use (
 	.
+	../gofr
+	../gofr/transport/grpc
+	../gofr/transport/http
+	../gofr/transport/rpcx
+	../gofr/transport/websocket
 	../gokit
 	../gokit/filepath
 	../gokit/logger/writer/lumberjack

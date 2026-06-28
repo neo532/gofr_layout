@@ -19,6 +19,7 @@ endif
 # init env
 init:
 	go install github.com/neo532/gofr/cmd/protoc-gen-go-svc@latest
+	go install github.com/neo532/gofr/cmd/protoc-gen-go-client@latest
 
 .PHONY: api
 # generate api proto
@@ -26,8 +27,17 @@ api:
 	protoc -I=. -I=third_party \
 	       --go_out=module=github.com/neo532/gofr_layout/proto:. \
 	       --go-svc_out=. \
-		   --go-svc_opt=paths=source_relative,protocols=http,grpc \
+		   --go-svc_opt=paths=source_relative,protocols=http,grpc,rpcx,websocket \
 	       --validate_out=lang=go,module=github.com/neo532/gofr_layout/proto:. \
+	       $(API_PROTO_FILES)
+
+.PHONY: client
+# generate client proto
+client:
+	protoc -I=. -I=third_party \
+	       --go_out=module=github.com/neo532/gofr_layout/proto:. \
+	       --go-client_out=. \
+		   --go-client_opt=paths=source_relative,protocols=http,grpc,rpcx,websocket \
 	       $(API_PROTO_FILES)
 
 

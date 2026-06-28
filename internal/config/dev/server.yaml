@@ -2,3 +2,12 @@ server:
   http:
     addr: 0.0.0.0:8500
     timeout: 3 # seconds
+  grpc:
+    addr: 0.0.0.0:8501
+    timeout: 3 # seconds
+  rpcx:
+    addr: 0.0.0.0:8502
+    timeout: 3 # seconds
+  websocket:
+    addr: 0.0.0.0:8503
+    timeout: 3 # seconds

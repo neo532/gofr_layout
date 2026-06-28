@@ -13,7 +13,7 @@ import (
 	"github.com/neo532/gofr_layout/internal/data/connect"
 	"github.com/neo532/gofr_layout/internal/domain"
 	"github.com/neo532/gofr_layout/internal/server"
-	"github.com/neo532/gofr_layout/internal/service/api"
+	"github.com/neo532/gofr_layout/internal/service/consumer"
 )
 
 func initApp() (*gofr.App, func(), error) {
@@ -22,7 +22,7 @@ func initApp() (*gofr.App, func(), error) {
 
 		connect.ProviderSet,
 
-		api.ProviderSet,
+		consumer.ProviderSet,
 		data.ProviderSet,
 		domain.ProviderSet,
 
