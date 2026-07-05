@@ -45,7 +45,7 @@ client:
 # generate all
 all:
 	make api;
-	make reason;
+	make client;
 
 # show help
 help:
