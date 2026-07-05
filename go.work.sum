@@ -52,6 +52,13 @@ github.com/miekg/dns v1.1.26/go.mod h1:bPDLeHnStXmXAq1m/Ch/hvfNHr14JKNPMBo3VZKju
 github.com/mitchellh/cli v1.1.0/go.mod h1:xcISNoH86gajksDmfB23e/pu+B+GeFRMYmoHXxx3xhI=
 github.com/mitchellh/go-homedir v1.1.0/go.mod h1:SfyaCUpYCn1Vlf4IUYiD9fPX4A5wJrkLzIz1N1q0pr0=
 github.com/mitchellh/mapstructure v1.4.1/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
+github.com/neo532/gokit/database/orm v1.0.0 h1:IXk+qJW4g5VNbnNUY8JIG5xt/9Qad0D57Tn0ITzNEH4=
+github.com/neo532/gokit/database/orm v1.0.0/go.mod h1:xoyRSrnNgGV2l7jSwheNBixlub8efzHlk1WsCmX5MK0=
+github.com/neo532/gokit/database/redis v1.0.0 h1:ZZ7Z2U6bgeEzHydi9Z8jAEmyCu90WhIcjY53igPHtd8=
+github.com/neo532/gokit/database/redis v1.0.0/go.mod h1:RHOQgUkuL9+Zt1D7I5ElBXrh1YeC6rGjEu+k6JhBZJM=
+github.com/neo532/gokit/filepath v1.0.1/go.mod h1:qQu3ZTtpOJx9c/FG066zbyGfV2gyKUpHA8mpPJCeJWI=
+github.com/neo532/gokit/queue/kafka v1.0.0 h1:DFfm5hsxHW24ft8ITYAvdzV0fsGCum7ud+sQDdO3yDo=
+github.com/neo532/gokit/queue/kafka v1.0.0/go.mod h1:cEZfBj4OYjbac4h4jmlx97NdoLbsjIVAZZWFAInDSZ8=
 github.com/nxadm/tail v1.4.4/go.mod h1:kenIhsEOeOJmVchQTgglprH7qJGnHDVpk1VPCcaMI8A=
 github.com/onsi/ginkgo v1.12.1/go.mod h1:zj2OWP4+oCPe1qIXoGWkgMRwljMUYCdkwsT2108oapk=
 github.com/onsi/ginkgo v1.15.0/go.mod h1:hF8qUzuuC8DJGygJH3726JnCZX4MYbRB8yFfISqnKUg=

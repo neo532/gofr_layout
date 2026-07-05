@@ -6,16 +6,16 @@ require (
 	github.com/IBM/sarama v1.50.3
 	github.com/google/wire v0.5.0
 	github.com/gorilla/websocket v1.5.3
-	github.com/neo532/gofr v1.0.16-0.20260620132837-165450a018e1
-	github.com/neo532/gofr/transport/grpc v0.0.0-20260620132837-165450a018e1
-	github.com/neo532/gofr/transport/http v0.0.0-20260620132837-165450a018e1
-	github.com/neo532/gofr/transport/rpcx v0.0.0-20260620132837-165450a018e1
-	github.com/neo532/gofr/transport/websocket v0.0.0
+	github.com/neo532/gofr v1.0.16
+	github.com/neo532/gofr/transport/grpc v1.0.1
+	github.com/neo532/gofr/transport/http v1.0.1
+	github.com/neo532/gofr/transport/rpcx v1.0.1
+	github.com/neo532/gofr/transport/websocket v1.0.1
 	github.com/neo532/gofr_layout/proto v0.0.0
-	github.com/neo532/gokit v1.0.45
+	github.com/neo532/gokit v1.0.47
 	github.com/neo532/gokit/database/orm v1.0.0
 	github.com/neo532/gokit/database/redis v1.0.0
-	github.com/neo532/gokit/filepath v1.0.0
+	github.com/neo532/gokit/filepath v1.0.1
 	github.com/neo532/gokit/logger/writer/lumberjack v1.0.0
 	github.com/neo532/gokit/queue/kafka v1.0.0
 	github.com/smallnest/rpcx v1.9.4
@@ -108,13 +108,4 @@ require (
 	gorm.io/gorm v1.31.1
 )
 
-replace (
-	github.com/neo532/gofr => ../gofr
-	github.com/neo532/gofr/transport/rpcx => ../gofr/transport/rpcx
-	github.com/neo532/gofr/transport/websocket => ../gofr/transport/websocket
-	github.com/neo532/gofr_layout/proto => ./proto
-	github.com/neo532/gokit => ../gokit
-	github.com/neo532/gokit/database/orm => ../gokit/database/orm
-	github.com/neo532/gokit/database/redis => ../gokit/database/redis
-	github.com/neo532/gokit/queue/kafka => ../gokit/queue/kafka
-)
+replace github.com/neo532/gofr_layout/proto => ./proto
