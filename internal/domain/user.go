@@ -3,7 +3,7 @@ package domain
 import (
 	"context"
 
-	"github.com/neo532/gofr_layout/internal/data/connect"
+	"github.com/neo532/gofr_layout/internal/connect"
 	"github.com/neo532/gofr_layout/internal/repo"
 	pb "github.com/neo532/gofr_layout/proto/api/user/v1"
 	"github.com/neo532/gokit/errorx"

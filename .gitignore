@@ -2,9 +2,9 @@
 
 .DS_Store
 *.sw[op]
-.fsw.yml
 /.claude
 
 /pid
 /bin
 /configs
+/api

@@ -50,13 +50,6 @@ func main() {
 	}
 	defer cleanup()
 
-	// pid
-	// prestop: ["cat","{path}/pid","|","xargs","kill","-2"]
-	//  pkill -f "/tmp/consumer"
-	if err := app.WritePID(""); err != nil {
-		panic(err)
-	}
-
 	// start and wait for stop signal
 	if err := app.Run(); err != nil {
 		panic(err)

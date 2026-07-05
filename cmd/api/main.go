@@ -36,6 +36,7 @@ func newApp(
 		gofr.Version(Version),
 		gofr.Metadata(map[string]string{}),
 		gofr.Context(c),
+		gofr.EnableUpgrader(),
 		gofr.Server(srvs...),
 	)
 }
@@ -49,12 +50,6 @@ func main() {
 		panic(err)
 	}
 	defer cleanup()
-
-	// pid
-	// prestop: ["cat","{path}/pid","|","xargs","kill","-2"]
-	if err := app.WritePID(""); err != nil {
-		panic(err)
-	}
 
 	// start and wait for stop signal
 	if err := app.Run(); err != nil {

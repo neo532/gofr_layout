@@ -40,31 +40,31 @@ type DataConsumerUserCfg struct {
 	ConsumerConf DataConsumerConfCfg `yaml:"_consumer_conf"` // DataConsumerConfCfg
 }
 
-type DataDatabaseReadCfg struct {
+type DataDatabaseMasterCfg struct {
 	Dsn atomic.Value `yaml:"dsn"` // string
 	Name atomic.Value `yaml:"name"` // string
 }
 
-type DataDatabaseShadowReadCfg struct {
+type DataDatabaseShadowMasterCfg struct {
 	Dsn atomic.Value `yaml:"dsn"` // string
 	Name atomic.Value `yaml:"name"` // string
 }
 
-type DataDatabaseShadowWriteCfg struct {
+type DataDatabaseShadowSlaveCfg struct {
 	Dsn atomic.Value `yaml:"dsn"` // string
 	Name atomic.Value `yaml:"name"` // string
 }
 
-type DataDatabaseWriteCfg struct {
+type DataDatabaseSlaveCfg struct {
 	Dsn atomic.Value `yaml:"dsn"` // string
 	Name atomic.Value `yaml:"name"` // string
 }
 
 type DataDatabaseConfCfg struct {
-	DatabaseRead DataDatabaseReadCfg `yaml:"_database_read"` // DataDatabaseReadCfg
-	DatabaseShadowRead DataDatabaseShadowReadCfg `yaml:"_database_shadow_read"` // DataDatabaseShadowReadCfg
-	DatabaseShadowWrite DataDatabaseShadowWriteCfg `yaml:"_database_shadow_write"` // DataDatabaseShadowWriteCfg
-	DatabaseWrite DataDatabaseWriteCfg `yaml:"_database_write"` // DataDatabaseWriteCfg
+	DatabaseMaster DataDatabaseMasterCfg `yaml:"_database_master"` // DataDatabaseMasterCfg
+	DatabaseShadowMaster DataDatabaseShadowMasterCfg `yaml:"_database_shadow_master"` // DataDatabaseShadowMasterCfg
+	DatabaseShadowSlave DataDatabaseShadowSlaveCfg `yaml:"_database_shadow_slave"` // DataDatabaseShadowSlaveCfg
+	DatabaseSlave DataDatabaseSlaveCfg `yaml:"_database_slave"` // DataDatabaseSlaveCfg
 	ConnMaxLifetime atomic.Int64 `yaml:"conn_max_lifetime"` // int64
 	MaxIdleConns atomic.Int64 `yaml:"max_idle_conns"` // int64
 	MaxOpenConns atomic.Int64 `yaml:"max_open_conns"` // int64
@@ -296,7 +296,7 @@ func loadDataConsumerUserCfg(raw map[string]any, c *DataConsumerUserCfg) {
 	}
 }
 
-func loadDataDatabaseReadCfg(raw map[string]any, c *DataDatabaseReadCfg) {
+func loadDataDatabaseMasterCfg(raw map[string]any, c *DataDatabaseMasterCfg) {
 	for k, v := range raw {
 		switch k {
 		case "dsn":
@@ -315,7 +315,7 @@ func loadDataDatabaseReadCfg(raw map[string]any, c *DataDatabaseReadCfg) {
 	}
 }
 
-func loadDataDatabaseShadowReadCfg(raw map[string]any, c *DataDatabaseShadowReadCfg) {
+func loadDataDatabaseShadowMasterCfg(raw map[string]any, c *DataDatabaseShadowMasterCfg) {
 	for k, v := range raw {
 		switch k {
 		case "dsn":
@@ -334,7 +334,7 @@ func loadDataDatabaseShadowReadCfg(raw map[string]any, c *DataDatabaseShadowRead
 	}
 }
 
-func loadDataDatabaseShadowWriteCfg(raw map[string]any, c *DataDatabaseShadowWriteCfg) {
+func loadDataDatabaseShadowSlaveCfg(raw map[string]any, c *DataDatabaseShadowSlaveCfg) {
 	for k, v := range raw {
 		switch k {
 		case "dsn":
@@ -353,7 +353,7 @@ func loadDataDatabaseShadowWriteCfg(raw map[string]any, c *DataDatabaseShadowWri
 	}
 }
 
-func loadDataDatabaseWriteCfg(raw map[string]any, c *DataDatabaseWriteCfg) {
+func loadDataDatabaseSlaveCfg(raw map[string]any, c *DataDatabaseSlaveCfg) {
 	for k, v := range raw {
 		switch k {
 		case "dsn":
@@ -375,21 +375,21 @@ func loadDataDatabaseWriteCfg(raw map[string]any, c *DataDatabaseWriteCfg) {
 func loadDataDatabaseConfCfg(raw map[string]any, c *DataDatabaseConfCfg) {
 	for k, v := range raw {
 		switch k {
-		case "_database_read":
+		case "_database_master":
 			if m, ok := v.(map[string]any); ok {
-				loadDataDatabaseReadCfg(m, &c.DatabaseRead)
+				loadDataDatabaseMasterCfg(m, &c.DatabaseMaster)
 			}
-		case "_database_shadow_read":
+		case "_database_shadow_master":
 			if m, ok := v.(map[string]any); ok {
-				loadDataDatabaseShadowReadCfg(m, &c.DatabaseShadowRead)
+				loadDataDatabaseShadowMasterCfg(m, &c.DatabaseShadowMaster)
 			}
-		case "_database_shadow_write":
+		case "_database_shadow_slave":
 			if m, ok := v.(map[string]any); ok {
-				loadDataDatabaseShadowWriteCfg(m, &c.DatabaseShadowWrite)
+				loadDataDatabaseShadowSlaveCfg(m, &c.DatabaseShadowSlave)
 			}
-		case "_database_write":
+		case "_database_slave":
 			if m, ok := v.(map[string]any); ok {
-				loadDataDatabaseWriteCfg(m, &c.DatabaseWrite)
+				loadDataDatabaseSlaveCfg(m, &c.DatabaseSlave)
 			}
 		case "conn_max_lifetime":
 			switch n := v.(type) {

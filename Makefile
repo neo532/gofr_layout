@@ -31,6 +31,7 @@ init:
 	go install github.com/codeskyblue/fswatch@latest
 	go install github.com/neo532/gokit/cmd/config-gen-go-struct@latest
 	go install github.com/neo532/gokit/cmd/wire-gen-go-provider@latest
+	go install github.com/GaijinEntertainment/go-exhaustruct/v3/cmd/exhaustruct@latest
 
 
 .PHONY: config
@@ -50,6 +51,12 @@ initConfig:
 generate:
 	wire-gen-go-provider
 	GOWORK=off go generate ./cmd/...
+
+.PHONY: check-constructor
+check-constructor:
+	gofr-check-constructor ./internal/domain/... \
+	    ./internal/data/... \
+	    ./internal/service/...
 
 
 .PHONY: build

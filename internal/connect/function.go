@@ -43,8 +43,8 @@ func newDatabase(c context.Context, cfg *config.DataDatabaseConfCfg, log logger.
 		)
 	}
 	dbs = orm.News(
-		orm.WithRead(connet(c, cfg, cfg.DatabaseRead.Name.Load().(string), cfg.DatabaseRead.Dsn.Load().(string), log)),
-		orm.WithWrite(connet(c, cfg, cfg.DatabaseWrite.Name.Load().(string), cfg.DatabaseWrite.Dsn.Load().(string), log)),
+		orm.WithMaster(connet(c, cfg, cfg.DatabaseMaster.Name.Load().(string), cfg.DatabaseMaster.Dsn.Load().(string), log)),
+		orm.WithSlave(connet(c, cfg, cfg.DatabaseSlave.Name.Load().(string), cfg.DatabaseSlave.Dsn.Load().(string), log)),
 	)
 	return
 }

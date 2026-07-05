@@ -1,0 +1,15 @@
+triggers:
+- name: cmd/script
+  pattens:
+  - '**/*.go'
+  env:
+    DEBUG: "1"
+  cmd: make buildScript &&  ./bin/script -conf configs/ user.create a b c.d e
+  shell: true
+  delay: 100ms
+  stop_timeout: 500ms
+  signal: KILL
+  kill_signal: "SIGTERM"
+watch_paths:
+- .
+watch_depth: 5

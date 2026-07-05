@@ -9,8 +9,8 @@ package main
 import (
 	"github.com/neo532/gofr"
 	"github.com/neo532/gofr_layout/cmd"
+	"github.com/neo532/gofr_layout/internal/connect"
 	"github.com/neo532/gofr_layout/internal/data"
-	"github.com/neo532/gofr_layout/internal/data/connect"
 	"github.com/neo532/gofr_layout/internal/domain"
 	"github.com/neo532/gofr_layout/internal/server"
 	"github.com/neo532/gofr_layout/internal/service/api"

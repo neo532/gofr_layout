@@ -7,11 +7,11 @@ data:
       conn_max_lifetime: 2 # seocond
       max_slowtime: 0.5 # seocond
       table_prefix: 
-      _database_read:
-        name: "default_read"
+      _database_master:
+        name: "default_master"
         dsn: root:12345678@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=true&loc=Local
-      _database_write:
-        name: "default_write"
+      _database_slave:
+        name: "default_slave"
         dsn: root:12345678@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=true&loc=Local
   database_biz:
     _database_conf:
@@ -20,17 +20,17 @@ data:
       conn_max_lifetime: 2 # seocond
       max_slowtime: 0.5 # seocond
       table_prefix: 
-      _database_read:
-        name: "default_read"
+      _database_master:
+        name: "default_master"
         dsn: root:12345678@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=true&loc=Local
-      _database_write:
-        name: "default_write"
+      _database_slave:
+        name: "default_slave"
         dsn: root:12345678@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=true&loc=Local
-      _database_shadow_read:
-        name: "default_read"
+      _database_shadow_master:
+        name: "default_master"
         dsn: root:12345678@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=true&loc=Local
-      _database_shadow_write:
-        name: "default_write"
+      _database_shadow_slave:
+        name: "default_slave"
         dsn: root:12345678@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=true&loc=Local
 
   redis_lock:
