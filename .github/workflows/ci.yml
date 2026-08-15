@@ -1,0 +1,29 @@
+name: fitness
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+jobs:
+  fitness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.x"
+          cache-dependency-path: go.sum
+      # NOTE: go.mod has TEMP local-dev `replace` directives pointing at sibling dirs
+      # (../gofr, ../gokit). In CI those must be resolved to released tags or checked
+      # out alongside. proto/ is in-repo (gitignored *_pb.go regenerated on demand):
+      #   - name: Generate proto
+      #     run: cd proto && make all
+      #   - uses: actions/checkout@v4
+      #     with:
+      #       repository: <org>/gofr
+      #       path: gofr
+      - name: Generate proto
+        run: cd proto && make all
+      - name: Fitness
+        run: python3 scripts/fitness.py

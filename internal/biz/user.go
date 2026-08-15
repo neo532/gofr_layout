@@ -1,4 +1,4 @@
-package domain
+package biz
 
 import (
 	"context"
@@ -9,25 +9,25 @@ import (
 	"github.com/neo532/gokit/errorx"
 )
 
-type UserDomain struct {
+type UserBiz struct {
 	txUser  connect.TransactionUser
 	user    repo.UserRepo
 	pdcUser connect.ProducerUser
 }
 
-func NewUserDomain(
+func NewUserBiz(
 	txUser connect.TransactionUser,
 	user repo.UserRepo,
 	pdcUser connect.ProducerUser,
-) *UserDomain {
-	return &UserDomain{
+) *UserBiz {
+	return &UserBiz{
 		txUser:  txUser,
 		user:    user,
 		pdcUser: pdcUser,
 	}
 }
 
-func (d *UserDomain) Create(c context.Context, req *pb.User) (err error) {
+func (d *UserBiz) Create(c context.Context, req *pb.User) (err error) {
 
 	if err = d.txUser(c, func(c context.Context) (err error) {
 
@@ -61,6 +61,6 @@ func (d *UserDomain) Create(c context.Context, req *pb.User) (err error) {
 	return
 }
 
-func (d *UserDomain) GetById(c context.Context, id int64) (rst *pb.User, err error) {
+func (d *UserBiz) GetById(c context.Context, id int64) (rst *pb.User, err error) {
 	return d.user.GetById(c, id)
 }

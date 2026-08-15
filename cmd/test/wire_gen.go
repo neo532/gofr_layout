@@ -8,9 +8,9 @@ package test
 
 import (
 	"github.com/neo532/gofr_layout/cmd"
+	"github.com/neo532/gofr_layout/internal/biz"
 	"github.com/neo532/gofr_layout/internal/connect"
 	"github.com/neo532/gofr_layout/internal/data"
-	"github.com/neo532/gofr_layout/internal/domain"
 	"github.com/neo532/gofr_layout/internal/service/api"
 )
 
@@ -43,8 +43,8 @@ func UserApi() (*api.UserApi, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
-	userDomain := domain.NewUserDomain(transactionUser, userRepo, producerUser)
-	userApi := api.NewUserApi(userDomain, logger)
+	userBiz := biz.NewUserBiz(transactionUser, userRepo, producerUser)
+	userApi := api.NewUserApi(userBiz, logger)
 	return userApi, func() {
 		cleanup4()
 		cleanup3()

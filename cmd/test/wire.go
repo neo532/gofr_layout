@@ -8,9 +8,9 @@ package test
 import (
 	"github.com/google/wire"
 	"github.com/neo532/gofr_layout/cmd"
+	"github.com/neo532/gofr_layout/internal/biz"
 	"github.com/neo532/gofr_layout/internal/connect"
 	"github.com/neo532/gofr_layout/internal/data"
-	"github.com/neo532/gofr_layout/internal/domain"
 	"github.com/neo532/gofr_layout/internal/service/api"
 )
 
@@ -22,6 +22,6 @@ func UserApi() (*api.UserApi, func(), error) {
 
 		api.ProviderSet,
 		data.ProviderSet,
-		domain.ProviderSet,
+		biz.ProviderSet,
 	))
 }

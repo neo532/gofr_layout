@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package v1;
 
-option go_package = "github.com/neo532/gofr_layout/proto/api/v1;v1";
+option go_package = "github.com/neo532/gofr_layout/proto/api/v1";
 
 enum ErrCode {
 	OK                   = 0;

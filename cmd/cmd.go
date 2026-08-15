@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/google/wire"
+	gofrTrace "github.com/neo532/gofr/middleware/trace"
 	"github.com/neo532/gofr_layout/internal/config"
 	kitLog "github.com/neo532/gofr_layout/kit/log"
 	fp "github.com/neo532/gokit/filepath"
@@ -99,7 +100,7 @@ func InitLogger(cfg *config.Config) (log logger.Logger, cleanup func(), err erro
 			"entry", string(cfg.General.Entry.Load().(string)),
 		),
 		slog.WithLevel(cfg.ConfigGeneral.General.Logger.Level.Load().(string)),
-		slog.WithContextParam(kitLog.ProtocolFromContext),
+		slog.WithContextParam(kitLog.KindFromContext),
 	}
 
 	if cfg.General.Env.Load().(string) == EnvDev {
@@ -114,6 +115,11 @@ func InitLogger(cfg *config.Config) (log logger.Logger, cleanup func(), err erro
 }
 
 func BootContext() (c context.Context) {
-	c = context.Background()
+	// Give the whole process a single boot traceId so logs emitted outside any
+	// request (startup, background goroutines, DB pool) still carry an
+	// identifier. kit/log's TraceIDFromContext reads it via the OTel span
+	// context, and the gofr trace middleware replaces it per request with the
+	// request's trace.
+	c = gofrTrace.WithBootTrace(context.Background())
 	return
 }

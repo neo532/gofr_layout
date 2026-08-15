@@ -1,5 +1,5 @@
 package log
 
 const (
-	KeyProtocol = "protocol"
+	KeyKind = "kind"
 )

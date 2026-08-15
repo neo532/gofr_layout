@@ -9,9 +9,9 @@ package main
 import (
 	"github.com/neo532/gofr"
 	"github.com/neo532/gofr_layout/cmd"
+	"github.com/neo532/gofr_layout/internal/biz"
 	"github.com/neo532/gofr_layout/internal/connect"
 	"github.com/neo532/gofr_layout/internal/data"
-	"github.com/neo532/gofr_layout/internal/domain"
 	"github.com/neo532/gofr_layout/internal/server"
 	"github.com/neo532/gofr_layout/internal/service/script"
 )
@@ -45,9 +45,9 @@ func initApp() (*gofr.App, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
-	userDomain := domain.NewUserDomain(transactionUser, userRepo, producerUser)
-	userScript := script.NewUserScript(userDomain, logger)
-	user1Script := script.NewUser1Script(userDomain, logger)
+	userBiz := biz.NewUserBiz(transactionUser, userRepo, producerUser)
+	userScript := script.NewUserScript(userBiz, logger)
+	user1Script := script.NewUser1Script(userBiz, logger)
 	scriptServer := server.NewScriptServer(userScript, user1Script)
 	app := newApp(context, config, scriptServer)
 	return app, func() {

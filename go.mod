@@ -6,16 +6,18 @@ require (
 	github.com/IBM/sarama v1.50.3
 	github.com/google/wire v0.5.0
 	github.com/gorilla/websocket v1.5.3
-	github.com/neo532/gofr v1.0.16
-	github.com/neo532/gofr/transport/grpc v1.0.1
-	github.com/neo532/gofr/transport/http v1.0.1
-	github.com/neo532/gofr/transport/rpcx v1.0.1
-	github.com/neo532/gofr/transport/websocket v1.0.1
+	github.com/neo532/gofr v1.0.17
+	github.com/neo532/gofr/middleware/trace v1.0.0
+	github.com/neo532/gofr/transport/grpc v1.0.2
+	github.com/neo532/gofr/transport/http v1.0.2
+	github.com/neo532/gofr/transport/rpcx v1.0.2
+	github.com/neo532/gofr/transport/websocket v1.0.2
 	github.com/neo532/gofr_layout/proto v0.0.0
-	github.com/neo532/gokit v1.0.47
+	github.com/neo532/gokit v1.0.48
 	github.com/neo532/gokit/database/orm v1.0.0
 	github.com/neo532/gokit/database/redis v1.0.0
 	github.com/neo532/gokit/filepath v1.0.1
+	github.com/neo532/gokit/logger/slog v1.0.0
 	github.com/neo532/gokit/logger/writer/lumberjack v1.0.0
 	github.com/neo532/gokit/queue/kafka v1.0.0
 	github.com/smallnest/rpcx v1.9.4
@@ -34,7 +36,9 @@ require (
 	github.com/dgryski/go-jump v0.0.0-20211018200510-ba001c3ffce0 // indirect
 	github.com/edwingeng/doublejump v1.0.1 // indirect
 	github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a // indirect
-	github.com/fatih/color v1.18.0 // indirect
+	github.com/fatih/color v1.19.0 // indirect
+	github.com/go-logr/logr v1.4.4 // indirect
+	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ping/ping v1.2.0 // indirect
 	github.com/godzie44/go-uring v0.0.0-20220926161041-69611e8b13d5 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
@@ -68,6 +72,10 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/xtaci/kcp-go v5.4.20+incompatible // indirect
+	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
+	go.opentelemetry.io/otel v1.45.0 // indirect
+	go.opentelemetry.io/otel/metric v1.45.0 // indirect
+	go.opentelemetry.io/otel/trace v1.45.0 // indirect
 )
 
 require (
@@ -94,7 +102,6 @@ require (
 	github.com/pierrec/lz4/v4 v4.1.27 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20250401214520-65e299d6c5c9 // indirect
-	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	golang.org/x/crypto v0.53.0 // indirect
 	golang.org/x/mod v0.36.0 // indirect
 	golang.org/x/net v0.56.0 // indirect

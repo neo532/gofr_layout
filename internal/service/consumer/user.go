@@ -3,22 +3,22 @@ package consumer
 import (
 	"context"
 
-	"github.com/neo532/gofr_layout/internal/domain"
+	"github.com/neo532/gofr_layout/internal/biz"
 	"github.com/neo532/gokit/logger"
 )
 
 type UserConsumer struct {
-	dm  *domain.UserDomain
-	log logger.Logger
+	bUser *biz.UserBiz
+	log   logger.Logger
 }
 
 func NewUserConsumer(
-	dm *domain.UserDomain,
+	bUser *biz.UserBiz,
 	log logger.Logger,
 ) *UserConsumer {
 	return &UserConsumer{
-		dm:  dm,
-		log: log,
+		bUser: bUser,
+		log:   log,
 	}
 }
 

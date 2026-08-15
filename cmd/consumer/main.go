@@ -5,10 +5,22 @@ import (
 	"flag"
 
 	"github.com/neo532/gofr"
+	"github.com/neo532/gofr/transport"
 	"github.com/neo532/gofr_layout/cmd"
 	"github.com/neo532/gofr_layout/internal/config"
 	"github.com/neo532/gokit/queue"
 )
+
+// consumerServer adapts queue.Consumer to transport.Server. gokit/queue can't
+// implement transport.Server directly — it would require gokit to depend on
+// gofr, which would be a module cycle.
+type consumerServer struct {
+	csm queue.Consumer
+}
+
+func (c *consumerServer) Start(ctx context.Context) error { return c.csm.Start(ctx) }
+func (c *consumerServer) Stop(ctx context.Context) error  { return c.csm.Stop(ctx) }
+func (c *consumerServer) App(transport.App)               {}
 
 // go build -ldflags "-X main.Version=x.y.z"
 var (
@@ -36,7 +48,7 @@ func newApp(
 		gofr.Version(Version),
 		gofr.Metadata(map[string]string{}),
 		gofr.Context(c),
-		gofr.Server(csm),
+		gofr.Server(&consumerServer{csm: csm}),
 	)
 }
 

@@ -4,7 +4,7 @@ triggers:
   - '**/*.go'
   env:
     DEBUG: "1"
-  cmd: make buildConsumer &&  ./bin/consumer -conf configs/
+  cmd: make buildConsumer && exec ./bin/consumer -conf configs/
   shell: true
   delay: 100ms
   stop_timeout: 500ms

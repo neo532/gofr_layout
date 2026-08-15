@@ -4,7 +4,7 @@ triggers:
   - '**/*.go'
   env:
     DEBUG: "1"
-  cmd: make buildApi &&  ./bin/api -conf configs/
+  cmd: make buildApi && exec ./bin/api -conf configs/
   shell: true
   delay: 100ms
   stop_timeout: 500ms

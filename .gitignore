@@ -2,7 +2,11 @@
 
 .DS_Store
 *.sw[op]
-/.claude
+/.claude/*
+!/.claude/commands/
+!/.claude/commands/**
+!/.claude/skills/
+!/.claude/skills/**
 
 /pid
 /bin

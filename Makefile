@@ -109,6 +109,23 @@ all:
 	make runApi
 
 
+.PHONY: fitness
+# run fitness functions (Harness gate)
+fitness:
+	python3 scripts/fitness.py
+
+.PHONY: loop
+# run one verification round of the edit loop
+loop:
+	bash scripts/loop.sh
+
+.PHONY: spec-archive
+# archive a spec change: merge delta into docs/specs/lib
+spec-archive:
+	@test -n "$(change)" || (echo "usage: make spec-archive change=2026-08-13-user-crud"; exit 1)
+	python3 scripts/spec-archive.py $(change)
+
+
 # show help
 help:
 	@echo ''

@@ -9,9 +9,9 @@ import (
 	"github.com/google/wire"
 	"github.com/neo532/gofr"
 	"github.com/neo532/gofr_layout/cmd"
+	"github.com/neo532/gofr_layout/internal/biz"
 	"github.com/neo532/gofr_layout/internal/connect"
 	"github.com/neo532/gofr_layout/internal/data"
-	"github.com/neo532/gofr_layout/internal/domain"
 	"github.com/neo532/gofr_layout/internal/server"
 	"github.com/neo532/gofr_layout/internal/service/api"
 )
@@ -24,7 +24,7 @@ func initApp() (*gofr.App, func(), error) {
 
 		api.ProviderSet,
 		data.ProviderSet,
-		domain.ProviderSet,
+		biz.ProviderSet,
 
 		server.ProviderSet,
 
