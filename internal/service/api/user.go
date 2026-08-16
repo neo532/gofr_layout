@@ -5,23 +5,19 @@ import (
 
 	"github.com/neo532/gofr_layout/internal/biz"
 	pb "github.com/neo532/gofr_layout/proto/api/user/v1"
-	"github.com/neo532/gokit/logger"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // UserApi implements pb.UserApi.
 type UserApi struct {
 	bUser *biz.UserBiz
-	log   logger.Logger
 }
 
 func NewUserApi(
 	bUser *biz.UserBiz,
-	log logger.Logger,
 ) *UserApi {
 	return &UserApi{
 		bUser: bUser,
-		log:   log,
 	}
 }
 

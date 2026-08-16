@@ -11,19 +11,19 @@ import (
 
 type UserBiz struct {
 	txUser  connect.TransactionUser
-	user    repo.UserRepo
 	pdcUser connect.ProducerUser
+	rUser   repo.UserRepo
 }
 
 func NewUserBiz(
 	txUser connect.TransactionUser,
-	user repo.UserRepo,
 	pdcUser connect.ProducerUser,
+	rUser repo.UserRepo,
 ) *UserBiz {
 	return &UserBiz{
 		txUser:  txUser,
-		user:    user,
 		pdcUser: pdcUser,
+		rUser:   rUser,
 	}
 }
 
@@ -33,20 +33,20 @@ func (d *UserBiz) Create(c context.Context, req *pb.User) (err error) {
 
 		// get
 		var data *pb.User
-		if data, err = d.user.GetById(c, req.Id); err != nil {
+		if data, err = d.rUser.GetById(c, req.Id); err != nil {
 			err = errorx.Wrap(err)
 			return
 		}
 
 		if data.Id > 0 {
-			if err = d.user.Update(c, data.Id, req); err != nil {
+			if err = d.rUser.Update(c, data.Id, req); err != nil {
 				err = errorx.Wrap(err)
 			}
 			return
 		}
 
 		// create
-		if _, err = d.user.Create(c, req); err != nil {
+		if _, err = d.rUser.Create(c, req); err != nil {
 			err = errorx.Wrap(err)
 			return
 		}
@@ -62,5 +62,5 @@ func (d *UserBiz) Create(c context.Context, req *pb.User) (err error) {
 }
 
 func (d *UserBiz) GetById(c context.Context, id int64) (rst *pb.User, err error) {
-	return d.user.GetById(c, id)
+	return d.rUser.GetById(c, id)
 }
