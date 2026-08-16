@@ -36,8 +36,6 @@ func initApp() (*gofr.App, func(), error) {
 		return nil, nil, err
 	}
 	transactionUser := wireFieldsOfDatabaseUserSet.TX
-	databaseUser := wireFieldsOfDatabaseUserSet.DB
-	userRepo := data.NewUserRepo(databaseUser)
 	producerUser, cleanup4, err := connect.NewProducerDefault(context, config, logger)
 	if err != nil {
 		cleanup3()
@@ -45,7 +43,9 @@ func initApp() (*gofr.App, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
-	userBiz := biz.NewUserBiz(transactionUser, userRepo, producerUser)
+	databaseUser := wireFieldsOfDatabaseUserSet.DB
+	userRepo := data.NewUserRepo(databaseUser)
+	userBiz := biz.NewUserBiz(transactionUser, producerUser, userRepo)
 	userScript := script.NewUserScript(userBiz, logger)
 	user1Script := script.NewUser1Script(userBiz, logger)
 	scriptServer := server.NewScriptServer(userScript, user1Script)

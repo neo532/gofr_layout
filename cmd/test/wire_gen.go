@@ -34,8 +34,6 @@ func UserApi() (*api.UserApi, func(), error) {
 		return nil, nil, err
 	}
 	transactionUser := wireFieldsOfDatabaseUserSet.TX
-	databaseUser := wireFieldsOfDatabaseUserSet.DB
-	userRepo := data.NewUserRepo(databaseUser)
 	producerUser, cleanup4, err := connect.NewProducerDefault(context, config, logger)
 	if err != nil {
 		cleanup3()
@@ -43,8 +41,10 @@ func UserApi() (*api.UserApi, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
-	userBiz := biz.NewUserBiz(transactionUser, userRepo, producerUser)
-	userApi := api.NewUserApi(userBiz, logger)
+	databaseUser := wireFieldsOfDatabaseUserSet.DB
+	userRepo := data.NewUserRepo(databaseUser)
+	userBiz := biz.NewUserBiz(transactionUser, producerUser, userRepo)
+	userApi := api.NewUserApi(userBiz)
 	return userApi, func() {
 		cleanup4()
 		cleanup3()

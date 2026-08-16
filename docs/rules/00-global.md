@@ -3,6 +3,7 @@
 ## NEVER
 
 - NEVER 手改生成代码：proto 的 `_pb.go` / `_http.pb.go`、`wire_gen.go`、gorm model。一律从源重新生成。
+- NEVER 手改生成代码: wireProviderSet.go
 - NEVER 改 `.proto` 契约却不重新生成（`cd proto && make all`）——`*.pb.go` 被 gitignore，不生成就会用过期产物。
 - NEVER 绕过校验或评审：不用 `--no-verify`、不 force-push、不用 TODO 跳过关口。
 - NEVER 提交密钥或带真实凭据的配置。
