@@ -3,27 +3,26 @@
 package config
 
 import (
-	"sync/atomic"
-
+	"github.com/neo532/gokit/sync/atomicx"
 	"gopkg.in/yaml.v3"
 )
 
 type GeneralLoggerCfg struct {
-	Compress atomic.Bool `yaml:"compress"` // bool
-	Filename atomic.Value `yaml:"filename"` // string
-	Level atomic.Value `yaml:"level"` // string
-	MaxAge atomic.Int64 `yaml:"max_age"` // int64
-	MaxBackup atomic.Int64 `yaml:"max_backup"` // int64
-	MaxSize atomic.Int64 `yaml:"max_size"` // int64
+	Compress  atomicx.Atomic[bool]   `yaml:"compress"`   // bool
+	Filename  atomicx.Atomic[string] `yaml:"filename"`   // string
+	Level     atomicx.Atomic[string] `yaml:"level"`      // string
+	MaxAge    atomicx.Atomic[int64]  `yaml:"max_age"`    // int64
+	MaxBackup atomicx.Atomic[int64]  `yaml:"max_backup"` // int64
+	MaxSize   atomicx.Atomic[int64]  `yaml:"max_size"`   // int64
 }
 
 type GeneralCfg struct {
-	Entry atomic.Value `yaml:"entry"` // string
-	Env atomic.Value `yaml:"env"` // string
-	Ip atomic.Value `yaml:"ip"` // string
-	Logger GeneralLoggerCfg `yaml:"logger"` // GeneralLoggerCfg
-	Name atomic.Value `yaml:"name"` // string
-	Version atomic.Value `yaml:"version"` // string
+	Entry   atomicx.Atomic[string] `yaml:"entry"`   // string
+	Env     atomicx.Atomic[string] `yaml:"env"`     // string
+	Ip      atomicx.Atomic[string] `yaml:"ip"`      // string
+	Logger  GeneralLoggerCfg       `yaml:"logger"`  // GeneralLoggerCfg
+	Name    atomicx.Atomic[string] `yaml:"name"`    // string
+	Version atomicx.Atomic[string] `yaml:"version"` // string
 }
 
 type ConfigGeneral struct {
@@ -50,40 +49,42 @@ func loadGeneralLoggerCfg(raw map[string]any, c *GeneralLoggerCfg) {
 		switch k {
 		case "compress":
 			if b, ok := v.(bool); ok {
-				c.Compress.Store(b)
+				c.Compress.Set(b)
 			}
 		case "filename":
-			if v != nil {
-				c.Filename.Store(v)
-			} else {
-				c.Filename.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Filename.Set(s)
+			default:
+				c.Filename.Set("")
 			}
 		case "level":
-			if v != nil {
-				c.Level.Store(v)
-			} else {
-				c.Level.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Level.Set(s)
+			default:
+				c.Level.Set("")
 			}
 		case "max_age":
 			switch n := v.(type) {
 			case int:
-				c.MaxAge.Store(int64(n))
+				c.MaxAge.Set(int64(n))
 			case int64:
-				c.MaxAge.Store(n)
+				c.MaxAge.Set(n)
 			}
 		case "max_backup":
 			switch n := v.(type) {
 			case int:
-				c.MaxBackup.Store(int64(n))
+				c.MaxBackup.Set(int64(n))
 			case int64:
-				c.MaxBackup.Store(n)
+				c.MaxBackup.Set(n)
 			}
 		case "max_size":
 			switch n := v.(type) {
 			case int:
-				c.MaxSize.Store(int64(n))
+				c.MaxSize.Set(int64(n))
 			case int64:
-				c.MaxSize.Store(n)
+				c.MaxSize.Set(n)
 			}
 		}
 	}
@@ -93,38 +94,43 @@ func loadGeneralCfg(raw map[string]any, c *GeneralCfg) {
 	for k, v := range raw {
 		switch k {
 		case "entry":
-			if v != nil {
-				c.Entry.Store(v)
-			} else {
-				c.Entry.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Entry.Set(s)
+			default:
+				c.Entry.Set("")
 			}
 		case "env":
-			if v != nil {
-				c.Env.Store(v)
-			} else {
-				c.Env.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Env.Set(s)
+			default:
+				c.Env.Set("")
 			}
 		case "ip":
-			if v != nil {
-				c.Ip.Store(v)
-			} else {
-				c.Ip.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Ip.Set(s)
+			default:
+				c.Ip.Set("")
 			}
 		case "logger":
 			if m, ok := v.(map[string]any); ok {
 				loadGeneralLoggerCfg(m, &c.Logger)
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		case "version":
-			if v != nil {
-				c.Version.Store(v)
-			} else {
-				c.Version.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Version.Set(s)
+			default:
+				c.Version.Set("")
 			}
 		}
 	}
@@ -140,4 +146,3 @@ func loadConfigGeneral(raw map[string]any, c *ConfigGeneral) {
 		}
 	}
 }
-

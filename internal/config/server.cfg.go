@@ -3,35 +3,34 @@
 package config
 
 import (
-	"sync/atomic"
-
+	"github.com/neo532/gokit/sync/atomicx"
 	"gopkg.in/yaml.v3"
 )
 
 type ServerGrpcCfg struct {
-	Addr atomic.Value `yaml:"addr"` // string
-	Timeout atomic.Int64 `yaml:"timeout"` // int64
+	Addr    atomicx.Atomic[string] `yaml:"addr"`    // string
+	Timeout atomicx.Atomic[int64]  `yaml:"timeout"` // int64
 }
 
 type ServerHttpCfg struct {
-	Addr atomic.Value `yaml:"addr"` // string
-	Timeout atomic.Int64 `yaml:"timeout"` // int64
+	Addr    atomicx.Atomic[string] `yaml:"addr"`    // string
+	Timeout atomicx.Atomic[int64]  `yaml:"timeout"` // int64
 }
 
 type ServerRpcxCfg struct {
-	Addr atomic.Value `yaml:"addr"` // string
-	Timeout atomic.Int64 `yaml:"timeout"` // int64
+	Addr    atomicx.Atomic[string] `yaml:"addr"`    // string
+	Timeout atomicx.Atomic[int64]  `yaml:"timeout"` // int64
 }
 
 type ServerWebsocketCfg struct {
-	Addr atomic.Value `yaml:"addr"` // string
-	Timeout atomic.Int64 `yaml:"timeout"` // int64
+	Addr    atomicx.Atomic[string] `yaml:"addr"`    // string
+	Timeout atomicx.Atomic[int64]  `yaml:"timeout"` // int64
 }
 
 type ServerCfg struct {
-	Grpc ServerGrpcCfg `yaml:"grpc"` // ServerGrpcCfg
-	Http ServerHttpCfg `yaml:"http"` // ServerHttpCfg
-	Rpcx ServerRpcxCfg `yaml:"rpcx"` // ServerRpcxCfg
+	Grpc      ServerGrpcCfg      `yaml:"grpc"`      // ServerGrpcCfg
+	Http      ServerHttpCfg      `yaml:"http"`      // ServerHttpCfg
+	Rpcx      ServerRpcxCfg      `yaml:"rpcx"`      // ServerRpcxCfg
 	Websocket ServerWebsocketCfg `yaml:"websocket"` // ServerWebsocketCfg
 }
 
@@ -58,17 +57,18 @@ func loadServerGrpcCfg(raw map[string]any, c *ServerGrpcCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			if v != nil {
-				c.Addr.Store(v)
-			} else {
-				c.Addr.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Addr.Set(s)
+			default:
+				c.Addr.Set("")
 			}
 		case "timeout":
 			switch n := v.(type) {
 			case int:
-				c.Timeout.Store(int64(n))
+				c.Timeout.Set(int64(n))
 			case int64:
-				c.Timeout.Store(n)
+				c.Timeout.Set(n)
 			}
 		}
 	}
@@ -78,17 +78,18 @@ func loadServerHttpCfg(raw map[string]any, c *ServerHttpCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			if v != nil {
-				c.Addr.Store(v)
-			} else {
-				c.Addr.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Addr.Set(s)
+			default:
+				c.Addr.Set("")
 			}
 		case "timeout":
 			switch n := v.(type) {
 			case int:
-				c.Timeout.Store(int64(n))
+				c.Timeout.Set(int64(n))
 			case int64:
-				c.Timeout.Store(n)
+				c.Timeout.Set(n)
 			}
 		}
 	}
@@ -98,17 +99,18 @@ func loadServerRpcxCfg(raw map[string]any, c *ServerRpcxCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			if v != nil {
-				c.Addr.Store(v)
-			} else {
-				c.Addr.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Addr.Set(s)
+			default:
+				c.Addr.Set("")
 			}
 		case "timeout":
 			switch n := v.(type) {
 			case int:
-				c.Timeout.Store(int64(n))
+				c.Timeout.Set(int64(n))
 			case int64:
-				c.Timeout.Store(n)
+				c.Timeout.Set(n)
 			}
 		}
 	}
@@ -118,17 +120,18 @@ func loadServerWebsocketCfg(raw map[string]any, c *ServerWebsocketCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			if v != nil {
-				c.Addr.Store(v)
-			} else {
-				c.Addr.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Addr.Set(s)
+			default:
+				c.Addr.Set("")
 			}
 		case "timeout":
 			switch n := v.(type) {
 			case int:
-				c.Timeout.Store(int64(n))
+				c.Timeout.Set(int64(n))
 			case int64:
-				c.Timeout.Store(n)
+				c.Timeout.Set(n)
 			}
 		}
 	}
@@ -167,4 +170,3 @@ func loadConfigServer(raw map[string]any, c *ConfigServer) {
 		}
 	}
 }
-

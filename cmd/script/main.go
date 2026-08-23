@@ -28,11 +28,11 @@ func newApp(
 	srv *script.Server,
 ) *gofr.App {
 
-	config.Cfg.General.Version.Store(Version)
+	config.Cfg.General.Version.Set(Version)
 
 	return gofr.New(
-		gofr.ID(cfg.General.Ip.Load().(string)),
-		gofr.Name(cfg.General.Name.Load().(string)),
+		gofr.ID(cfg.General.Ip.Get()),
+		gofr.Name(cfg.General.Name.Get()),
 		gofr.Version(Version),
 		gofr.Metadata(map[string]string{}),
 		gofr.Context(c),

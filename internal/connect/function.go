@@ -15,7 +15,7 @@ import (
 	"github.com/neo532/gokit/queue"
 	cg "github.com/neo532/gokit/queue/kafka/consumergroup"
 	"github.com/neo532/gokit/queue/kafka/producer"
-	"github.com/neo532/gokit/util/slicex"
+	"github.com/neo532/gokit/util/timex"
 	"gorm.io/driver/mysql"
 )
 
@@ -26,14 +26,14 @@ func newDatabase(c context.Context, cfg *config.DataDatabaseConfCfg, log logger.
 		return orm.New(
 			name,
 			mysql.Open(dsn),
-			orm.WithTablePrefix(d.TablePrefix.Load().(string)),
-			orm.WithConnMaxLifetime(time.Duration(d.ConnMaxLifetime.Load()*int64(time.Second))),
-			orm.WithMaxIdleConns(int32(d.MaxIdleConns.Load())),
-			orm.WithMaxOpenConns(int32(d.MaxOpenConns.Load())),
+			orm.WithTablePrefix(d.TablePrefix.Get()),
+			orm.WithConnMaxLifetime(timex.Num2Duration(d.ConnMaxLifetime.Get(), time.Second)),
+			orm.WithMaxIdleConns(int32(d.MaxIdleConns.Get())),
+			orm.WithMaxOpenConns(int32(d.MaxOpenConns.Get())),
 			orm.WithLogger(log),
 			orm.WithSingularTable(),
 			orm.WithContext(c),
-			orm.WithSlowLog(time.Duration(d.MaxSlowtime.Load().(float64)*float64(time.Second))),
+			orm.WithSlowLog(timex.Num2Duration(d.MaxSlowtime.Get(), time.Second)),
 			orm.WithGormProcessor(func(db *gorm.DB) {
 				db.Callback().Query().After("gorm:query").Register("gokit:ignore_not_found", func(d *gorm.DB) {
 					if d.Error != nil && d.RowsAffected == 0 {
@@ -44,8 +44,8 @@ func newDatabase(c context.Context, cfg *config.DataDatabaseConfCfg, log logger.
 		)
 	}
 	dbs = orm.News(
-		orm.WithMaster(connet(c, cfg, cfg.DatabaseMaster.Name.Load().(string), cfg.DatabaseMaster.Dsn.Load().(string), log)),
-		orm.WithSlave(connet(c, cfg, cfg.DatabaseSlave.Name.Load().(string), cfg.DatabaseSlave.Dsn.Load().(string), log)),
+		orm.WithMaster(connet(c, cfg, cfg.DatabaseMaster.Name.Get(), cfg.DatabaseMaster.Dsn.Get(), log)),
+		orm.WithSlave(connet(c, cfg, cfg.DatabaseSlave.Name.Get(), cfg.DatabaseSlave.Dsn.Get(), log)),
 	)
 	return
 }
@@ -59,7 +59,7 @@ func newRedis(c context.Context, cfg *config.DataRedisConfCfg, log logger.Logger
 			name,
 			addr,
 			redis.WithPassword(password),
-			redis.WithSlowTime(time.Duration(d.MaxSlowtime.Load().(float64)*float64(time.Second))),
+			redis.WithSlowTime(timex.Num2Duration(d.MaxSlowtime.Get(), time.Second)),
 			redis.WithDb(int32(db)),
 			redis.WithLogger(log),
 			redis.WithContext(c),
@@ -68,10 +68,10 @@ func newRedis(c context.Context, cfg *config.DataRedisConfCfg, log logger.Logger
 	rdbs = redis.News(
 		redis.WithDefault(
 			connnet(c, cfg,
-				cfg.RedisDefault.Name.Load().(string),
-				cfg.RedisDefault.Addr.Load().(string),
-				cfg.RedisDefault.Password.Load().(string),
-				cfg.RedisDefault.Db.Load(),
+				cfg.RedisDefault.Name.Get(),
+				cfg.RedisDefault.Addr.Get(),
+				cfg.RedisDefault.Password.Get(),
+				cfg.RedisDefault.Db.Get(),
 				log,
 			),
 		),
@@ -98,23 +98,23 @@ func newProducer(c context.Context, cfg *config.DataProducerConfCfg, log logger.
 	opts := []queue.ProducerOption{
 		queue.WithProducer(connect(
 			c,
-			cfg.ProducerDefault.Name.Load().(string),
-			slicex.OfType[string](cfg.ProducerDefault.Addrs.Load().([]any)),
-			cfg.ProducerDefault.Topic.Load().(string),
+			cfg.ProducerDefault.Name.Get(),
+			cfg.ProducerDefault.Addrs.Get(),
+			cfg.ProducerDefault.Topic.Get(),
 			log,
 		)),
 		queue.WithProducerGray(connect(
 			c,
-			cfg.ProducerGray.Name.Load().(string),
-			slicex.OfType[string](cfg.ProducerGray.Addrs.Load().([]any)),
-			cfg.ProducerGray.Topic.Load().(string),
+			cfg.ProducerGray.Name.Get(),
+			cfg.ProducerGray.Addrs.Get(),
+			cfg.ProducerGray.Topic.Get(),
 			log,
 		)),
 		queue.WithProducerShadow(connect(
 			c,
-			cfg.ProducerShadow.Name.Load().(string),
-			slicex.OfType[string](cfg.ProducerShadow.Addrs.Load().([]any)),
-			cfg.ProducerShadow.Topic.Load().(string),
+			cfg.ProducerShadow.Name.Get(),
+			cfg.ProducerShadow.Addrs.Get(),
+			cfg.ProducerShadow.Topic.Get(),
 			log,
 		)),
 	}
@@ -142,7 +142,7 @@ func PkgConsumerUnit(
 			group,
 			cg.WithLogger(log, c),
 			cg.WithTopics(topics...),
-			cg.WithSlowLog(time.Duration(maxSlowtime)*time.Second),
+			cg.WithSlowLog(timex.Num2Duration(maxSlowtime, time.Second)),
 			cg.WithAutoCommit(true),
 			cg.WithBalanceStrategy(sarama.NewBalanceStrategySticky()),
 			cg.WithContext(c),
@@ -156,24 +156,24 @@ func PkgConsumerUnit(
 	cs := make([]queue.Consumer, 0, 3)
 	var s queue.Consumer
 	if s, err = connectConsumer(c,
-		cfg.MaxSlowtime.Load().(float64),
-		cfg.ConsumerDefault.Name.Load().(string),
-		cfg.ConsumerDefault.Group.Load().(string),
-		slicex.OfType[string](cfg.ConsumerDefault.Topics.Load().([]any)),
-		slicex.OfType[string](cfg.ConsumerDefault.Addrs.Load().([]any)),
+		cfg.MaxSlowtime.Get(),
+		cfg.ConsumerDefault.Name.Get(),
+		cfg.ConsumerDefault.Group.Get(),
+		cfg.ConsumerDefault.Topics.Get(),
+		cfg.ConsumerDefault.Addrs.Get(),
 		log,
 		fn,
 	); err != nil {
 		return
 	}
 	cs = append(cs, s)
-	if _, ok := cfg.ConsumerGray.Addrs.Load().([]string); ok {
+	if cfg.ConsumerGray.Addrs.Get() != nil {
 		if s, err = connectConsumer(c,
-			cfg.MaxSlowtime.Load().(float64),
-			cfg.ConsumerGray.Name.Load().(string),
-			cfg.ConsumerGray.Group.Load().(string),
-			slicex.OfType[string](cfg.ConsumerGray.Topics.Load().([]any)),
-			slicex.OfType[string](cfg.ConsumerGray.Addrs.Load().([]any)),
+			cfg.MaxSlowtime.Get(),
+			cfg.ConsumerGray.Name.Get(),
+			cfg.ConsumerGray.Group.Get(),
+			cfg.ConsumerGray.Topics.Get(),
+			cfg.ConsumerGray.Addrs.Get(),
 			log,
 			fn,
 		); err != nil {
@@ -181,13 +181,13 @@ func PkgConsumerUnit(
 		}
 		cs = append(cs, s)
 	}
-	if _, ok := cfg.ConsumerShadow.Addrs.Load().([]string); ok {
+	if cfg.ConsumerShadow.Addrs.Get() != nil {
 		if s, err = connectConsumer(c,
-			cfg.MaxSlowtime.Load().(float64),
-			cfg.ConsumerShadow.Name.Load().(string),
-			cfg.ConsumerShadow.Group.Load().(string),
-			slicex.OfType[string](cfg.ConsumerShadow.Topics.Load().([]any)),
-			slicex.OfType[string](cfg.ConsumerShadow.Addrs.Load().([]any)),
+			cfg.MaxSlowtime.Get(),
+			cfg.ConsumerShadow.Name.Get(),
+			cfg.ConsumerShadow.Group.Get(),
+			cfg.ConsumerShadow.Topics.Get(),
+			cfg.ConsumerShadow.Addrs.Get(),
 			log,
 			fn,
 		); err != nil {

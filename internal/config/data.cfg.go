@@ -3,37 +3,36 @@
 package config
 
 import (
-	"sync/atomic"
-
+	"github.com/neo532/gokit/sync/atomicx"
 	"gopkg.in/yaml.v3"
 )
 
 type DataConsumerDefaultCfg struct {
-	Addrs atomic.Value `yaml:"addrs"` // []string
-	Group atomic.Value `yaml:"group"` // string
-	Name atomic.Value `yaml:"name"` // string
-	Topics atomic.Value `yaml:"topics"` // []string
+	Addrs  atomicx.Slice[string]  `yaml:"addrs"`  // []string
+	Group  atomicx.Atomic[string] `yaml:"group"`  // string
+	Name   atomicx.Atomic[string] `yaml:"name"`   // string
+	Topics atomicx.Slice[string]  `yaml:"topics"` // []string
 }
 
 type DataConsumerGrayCfg struct {
-	Addrs atomic.Value `yaml:"addrs"` // []string
-	Group atomic.Value `yaml:"group"` // string
-	Name atomic.Value `yaml:"name"` // string
-	Topics atomic.Value `yaml:"topics"` // []string
+	Addrs  atomicx.Slice[string]  `yaml:"addrs"`  // []string
+	Group  atomicx.Atomic[string] `yaml:"group"`  // string
+	Name   atomicx.Atomic[string] `yaml:"name"`   // string
+	Topics atomicx.Slice[string]  `yaml:"topics"` // []string
 }
 
 type DataConsumerShadowCfg struct {
-	Addrs atomic.Value `yaml:"addrs"` // []string
-	Group atomic.Value `yaml:"group"` // string
-	Name atomic.Value `yaml:"name"` // string
-	Topics atomic.Value `yaml:"topics"` // []string
+	Addrs  atomicx.Slice[string]  `yaml:"addrs"`  // []string
+	Group  atomicx.Atomic[string] `yaml:"group"`  // string
+	Name   atomicx.Atomic[string] `yaml:"name"`   // string
+	Topics atomicx.Slice[string]  `yaml:"topics"` // []string
 }
 
 type DataConsumerConfCfg struct {
-	ConsumerDefault DataConsumerDefaultCfg `yaml:"_consumer_default"` // DataConsumerDefaultCfg
-	ConsumerGray DataConsumerGrayCfg `yaml:"_consumer_gray"` // DataConsumerGrayCfg
-	ConsumerShadow DataConsumerShadowCfg `yaml:"_consumer_shadow"` // DataConsumerShadowCfg
-	MaxSlowtime atomic.Value `yaml:"max_slowtime"` // float64
+	ConsumerDefault DataConsumerDefaultCfg  `yaml:"_consumer_default"` // DataConsumerDefaultCfg
+	ConsumerGray    DataConsumerGrayCfg     `yaml:"_consumer_gray"`    // DataConsumerGrayCfg
+	ConsumerShadow  DataConsumerShadowCfg   `yaml:"_consumer_shadow"`  // DataConsumerShadowCfg
+	MaxSlowtime     atomicx.Atomic[float64] `yaml:"max_slowtime"`      // float64
 }
 
 type DataConsumerUserCfg struct {
@@ -41,35 +40,35 @@ type DataConsumerUserCfg struct {
 }
 
 type DataDatabaseMasterCfg struct {
-	Dsn atomic.Value `yaml:"dsn"` // string
-	Name atomic.Value `yaml:"name"` // string
+	Dsn  atomicx.Atomic[string] `yaml:"dsn"`  // string
+	Name atomicx.Atomic[string] `yaml:"name"` // string
 }
 
 type DataDatabaseShadowMasterCfg struct {
-	Dsn atomic.Value `yaml:"dsn"` // string
-	Name atomic.Value `yaml:"name"` // string
+	Dsn  atomicx.Atomic[string] `yaml:"dsn"`  // string
+	Name atomicx.Atomic[string] `yaml:"name"` // string
 }
 
 type DataDatabaseShadowSlaveCfg struct {
-	Dsn atomic.Value `yaml:"dsn"` // string
-	Name atomic.Value `yaml:"name"` // string
+	Dsn  atomicx.Atomic[string] `yaml:"dsn"`  // string
+	Name atomicx.Atomic[string] `yaml:"name"` // string
 }
 
 type DataDatabaseSlaveCfg struct {
-	Dsn atomic.Value `yaml:"dsn"` // string
-	Name atomic.Value `yaml:"name"` // string
+	Dsn  atomicx.Atomic[string] `yaml:"dsn"`  // string
+	Name atomicx.Atomic[string] `yaml:"name"` // string
 }
 
 type DataDatabaseConfCfg struct {
-	DatabaseMaster DataDatabaseMasterCfg `yaml:"_database_master"` // DataDatabaseMasterCfg
+	DatabaseMaster       DataDatabaseMasterCfg       `yaml:"_database_master"`        // DataDatabaseMasterCfg
 	DatabaseShadowMaster DataDatabaseShadowMasterCfg `yaml:"_database_shadow_master"` // DataDatabaseShadowMasterCfg
-	DatabaseShadowSlave DataDatabaseShadowSlaveCfg `yaml:"_database_shadow_slave"` // DataDatabaseShadowSlaveCfg
-	DatabaseSlave DataDatabaseSlaveCfg `yaml:"_database_slave"` // DataDatabaseSlaveCfg
-	ConnMaxLifetime atomic.Int64 `yaml:"conn_max_lifetime"` // int64
-	MaxIdleConns atomic.Int64 `yaml:"max_idle_conns"` // int64
-	MaxOpenConns atomic.Int64 `yaml:"max_open_conns"` // int64
-	MaxSlowtime atomic.Value `yaml:"max_slowtime"` // float64
-	TablePrefix atomic.Value `yaml:"table_prefix"` // string
+	DatabaseShadowSlave  DataDatabaseShadowSlaveCfg  `yaml:"_database_shadow_slave"`  // DataDatabaseShadowSlaveCfg
+	DatabaseSlave        DataDatabaseSlaveCfg        `yaml:"_database_slave"`         // DataDatabaseSlaveCfg
+	ConnMaxLifetime      atomicx.Atomic[int64]       `yaml:"conn_max_lifetime"`       // int64
+	MaxIdleConns         atomicx.Atomic[int64]       `yaml:"max_idle_conns"`          // int64
+	MaxOpenConns         atomicx.Atomic[int64]       `yaml:"max_open_conns"`          // int64
+	MaxSlowtime          atomicx.Atomic[float64]     `yaml:"max_slowtime"`            // float64
+	TablePrefix          atomicx.Atomic[string]      `yaml:"table_prefix"`            // string
 }
 
 type DataDatabaseBizCfg struct {
@@ -81,27 +80,27 @@ type DataDatabaseUserCfg struct {
 }
 
 type DataProducerDefaultCfg struct {
-	Addrs atomic.Value `yaml:"addrs"` // []string
-	Name atomic.Value `yaml:"name"` // string
-	Topic atomic.Value `yaml:"topic"` // string
+	Addrs atomicx.Slice[string]  `yaml:"addrs"` // []string
+	Name  atomicx.Atomic[string] `yaml:"name"`  // string
+	Topic atomicx.Atomic[string] `yaml:"topic"` // string
 }
 
 type DataProducerGrayCfg struct {
-	Addrs atomic.Value `yaml:"addrs"` // []string
-	Name atomic.Value `yaml:"name"` // string
-	Topic atomic.Value `yaml:"topic"` // string
+	Addrs atomicx.Slice[string]  `yaml:"addrs"` // []string
+	Name  atomicx.Atomic[string] `yaml:"name"`  // string
+	Topic atomicx.Atomic[string] `yaml:"topic"` // string
 }
 
 type DataProducerShadowCfg struct {
-	Addrs atomic.Value `yaml:"addrs"` // []string
-	Name atomic.Value `yaml:"name"` // string
-	Topic atomic.Value `yaml:"topic"` // string
+	Addrs atomicx.Slice[string]  `yaml:"addrs"` // []string
+	Name  atomicx.Atomic[string] `yaml:"name"`  // string
+	Topic atomicx.Atomic[string] `yaml:"topic"` // string
 }
 
 type DataProducerConfCfg struct {
 	ProducerDefault DataProducerDefaultCfg `yaml:"_producer_default"` // DataProducerDefaultCfg
-	ProducerGray DataProducerGrayCfg `yaml:"_producer_gray"` // DataProducerGrayCfg
-	ProducerShadow DataProducerShadowCfg `yaml:"_producer_shadow"` // DataProducerShadowCfg
+	ProducerGray    DataProducerGrayCfg    `yaml:"_producer_gray"`    // DataProducerGrayCfg
+	ProducerShadow  DataProducerShadowCfg  `yaml:"_producer_shadow"`  // DataProducerShadowCfg
 }
 
 type DataProducerUserCfg struct {
@@ -109,31 +108,31 @@ type DataProducerUserCfg struct {
 }
 
 type DataRedisDefaultCfg struct {
-	Addr atomic.Value `yaml:"addr"` // string
-	Db atomic.Int64 `yaml:"db"` // int64
-	Name atomic.Value `yaml:"name"` // string
-	Password atomic.Value `yaml:"password"` // string
+	Addr     atomicx.Atomic[string] `yaml:"addr"`     // string
+	Db       atomicx.Atomic[int64]  `yaml:"db"`       // int64
+	Name     atomicx.Atomic[string] `yaml:"name"`     // string
+	Password atomicx.Atomic[string] `yaml:"password"` // string
 }
 
 type DataRedisGrayCfg struct {
-	Addr atomic.Value `yaml:"addr"` // string
-	Db atomic.Int64 `yaml:"db"` // int64
-	Name atomic.Value `yaml:"name"` // string
-	Password atomic.Value `yaml:"password"` // string
+	Addr     atomicx.Atomic[string] `yaml:"addr"`     // string
+	Db       atomicx.Atomic[int64]  `yaml:"db"`       // int64
+	Name     atomicx.Atomic[string] `yaml:"name"`     // string
+	Password atomicx.Atomic[string] `yaml:"password"` // string
 }
 
 type DataRedisShadowCfg struct {
-	Addr atomic.Value `yaml:"addr"` // string
-	Db atomic.Int64 `yaml:"db"` // int64
-	Name atomic.Value `yaml:"name"` // string
-	Password atomic.Value `yaml:"password"` // string
+	Addr     atomicx.Atomic[string] `yaml:"addr"`     // string
+	Db       atomicx.Atomic[int64]  `yaml:"db"`       // int64
+	Name     atomicx.Atomic[string] `yaml:"name"`     // string
+	Password atomicx.Atomic[string] `yaml:"password"` // string
 }
 
 type DataRedisConfCfg struct {
-	RedisDefault DataRedisDefaultCfg `yaml:"_redis_default"` // DataRedisDefaultCfg
-	RedisGray DataRedisGrayCfg `yaml:"_redis_gray"` // DataRedisGrayCfg
-	RedisShadow DataRedisShadowCfg `yaml:"_redis_shadow"` // DataRedisShadowCfg
-	MaxSlowtime atomic.Value `yaml:"max_slowtime"` // float64
+	RedisDefault DataRedisDefaultCfg     `yaml:"_redis_default"` // DataRedisDefaultCfg
+	RedisGray    DataRedisGrayCfg        `yaml:"_redis_gray"`    // DataRedisGrayCfg
+	RedisShadow  DataRedisShadowCfg      `yaml:"_redis_shadow"`  // DataRedisShadowCfg
+	MaxSlowtime  atomicx.Atomic[float64] `yaml:"max_slowtime"`   // float64
 }
 
 type DataRedisLockCfg struct {
@@ -142,10 +141,10 @@ type DataRedisLockCfg struct {
 
 type DataCfg struct {
 	ConsumerUser DataConsumerUserCfg `yaml:"consumer_user"` // DataConsumerUserCfg
-	DatabaseBiz DataDatabaseBizCfg `yaml:"database_biz"` // DataDatabaseBizCfg
+	DatabaseBiz  DataDatabaseBizCfg  `yaml:"database_biz"`  // DataDatabaseBizCfg
 	DatabaseUser DataDatabaseUserCfg `yaml:"database_user"` // DataDatabaseUserCfg
 	ProducerUser DataProducerUserCfg `yaml:"producer_user"` // DataProducerUserCfg
-	RedisLock DataRedisLockCfg `yaml:"redis_lock"` // DataRedisLockCfg
+	RedisLock    DataRedisLockCfg    `yaml:"redis_lock"`    // DataRedisLockCfg
 }
 
 type ConfigData struct {
@@ -171,28 +170,26 @@ func loadDataConsumerDefaultCfg(raw map[string]any, c *DataConsumerDefaultCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addrs":
-			if v != nil {
-				c.Addrs.Store(v)
-			} else {
-				c.Addrs.Store("")
+			if list, ok := v.([]any); ok {
+				c.Addrs.Set(list)
 			}
 		case "group":
-			if v != nil {
-				c.Group.Store(v)
-			} else {
-				c.Group.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Group.Set(s)
+			default:
+				c.Group.Set("")
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		case "topics":
-			if v != nil {
-				c.Topics.Store(v)
-			} else {
-				c.Topics.Store("")
+			if list, ok := v.([]any); ok {
+				c.Topics.Set(list)
 			}
 		}
 	}
@@ -202,28 +199,26 @@ func loadDataConsumerGrayCfg(raw map[string]any, c *DataConsumerGrayCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addrs":
-			if v != nil {
-				c.Addrs.Store(v)
-			} else {
-				c.Addrs.Store("")
+			if list, ok := v.([]any); ok {
+				c.Addrs.Set(list)
 			}
 		case "group":
-			if v != nil {
-				c.Group.Store(v)
-			} else {
-				c.Group.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Group.Set(s)
+			default:
+				c.Group.Set("")
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		case "topics":
-			if v != nil {
-				c.Topics.Store(v)
-			} else {
-				c.Topics.Store("")
+			if list, ok := v.([]any); ok {
+				c.Topics.Set(list)
 			}
 		}
 	}
@@ -233,28 +228,26 @@ func loadDataConsumerShadowCfg(raw map[string]any, c *DataConsumerShadowCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addrs":
-			if v != nil {
-				c.Addrs.Store(v)
-			} else {
-				c.Addrs.Store("")
+			if list, ok := v.([]any); ok {
+				c.Addrs.Set(list)
 			}
 		case "group":
-			if v != nil {
-				c.Group.Store(v)
-			} else {
-				c.Group.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Group.Set(s)
+			default:
+				c.Group.Set("")
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		case "topics":
-			if v != nil {
-				c.Topics.Store(v)
-			} else {
-				c.Topics.Store("")
+			if list, ok := v.([]any); ok {
+				c.Topics.Set(list)
 			}
 		}
 	}
@@ -276,10 +269,13 @@ func loadDataConsumerConfCfg(raw map[string]any, c *DataConsumerConfCfg) {
 				loadDataConsumerShadowCfg(m, &c.ConsumerShadow)
 			}
 		case "max_slowtime":
-			if v != nil {
-				c.MaxSlowtime.Store(v)
-			} else {
-				c.MaxSlowtime.Store("")
+			switch n := v.(type) {
+			case float64:
+				c.MaxSlowtime.Set(n)
+			case int:
+				c.MaxSlowtime.Set(float64(n))
+			case int64:
+				c.MaxSlowtime.Set(float64(n))
 			}
 		}
 	}
@@ -300,16 +296,18 @@ func loadDataDatabaseMasterCfg(raw map[string]any, c *DataDatabaseMasterCfg) {
 	for k, v := range raw {
 		switch k {
 		case "dsn":
-			if v != nil {
-				c.Dsn.Store(v)
-			} else {
-				c.Dsn.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Dsn.Set(s)
+			default:
+				c.Dsn.Set("")
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		}
 	}
@@ -319,16 +317,18 @@ func loadDataDatabaseShadowMasterCfg(raw map[string]any, c *DataDatabaseShadowMa
 	for k, v := range raw {
 		switch k {
 		case "dsn":
-			if v != nil {
-				c.Dsn.Store(v)
-			} else {
-				c.Dsn.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Dsn.Set(s)
+			default:
+				c.Dsn.Set("")
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		}
 	}
@@ -338,16 +338,18 @@ func loadDataDatabaseShadowSlaveCfg(raw map[string]any, c *DataDatabaseShadowSla
 	for k, v := range raw {
 		switch k {
 		case "dsn":
-			if v != nil {
-				c.Dsn.Store(v)
-			} else {
-				c.Dsn.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Dsn.Set(s)
+			default:
+				c.Dsn.Set("")
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		}
 	}
@@ -357,16 +359,18 @@ func loadDataDatabaseSlaveCfg(raw map[string]any, c *DataDatabaseSlaveCfg) {
 	for k, v := range raw {
 		switch k {
 		case "dsn":
-			if v != nil {
-				c.Dsn.Store(v)
-			} else {
-				c.Dsn.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Dsn.Set(s)
+			default:
+				c.Dsn.Set("")
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		}
 	}
@@ -394,35 +398,39 @@ func loadDataDatabaseConfCfg(raw map[string]any, c *DataDatabaseConfCfg) {
 		case "conn_max_lifetime":
 			switch n := v.(type) {
 			case int:
-				c.ConnMaxLifetime.Store(int64(n))
+				c.ConnMaxLifetime.Set(int64(n))
 			case int64:
-				c.ConnMaxLifetime.Store(n)
+				c.ConnMaxLifetime.Set(n)
 			}
 		case "max_idle_conns":
 			switch n := v.(type) {
 			case int:
-				c.MaxIdleConns.Store(int64(n))
+				c.MaxIdleConns.Set(int64(n))
 			case int64:
-				c.MaxIdleConns.Store(n)
+				c.MaxIdleConns.Set(n)
 			}
 		case "max_open_conns":
 			switch n := v.(type) {
 			case int:
-				c.MaxOpenConns.Store(int64(n))
+				c.MaxOpenConns.Set(int64(n))
 			case int64:
-				c.MaxOpenConns.Store(n)
+				c.MaxOpenConns.Set(n)
 			}
 		case "max_slowtime":
-			if v != nil {
-				c.MaxSlowtime.Store(v)
-			} else {
-				c.MaxSlowtime.Store("")
+			switch n := v.(type) {
+			case float64:
+				c.MaxSlowtime.Set(n)
+			case int:
+				c.MaxSlowtime.Set(float64(n))
+			case int64:
+				c.MaxSlowtime.Set(float64(n))
 			}
 		case "table_prefix":
-			if v != nil {
-				c.TablePrefix.Store(v)
-			} else {
-				c.TablePrefix.Store("")
+			switch s := v.(type) {
+			case string:
+				c.TablePrefix.Set(s)
+			default:
+				c.TablePrefix.Set("")
 			}
 		}
 	}
@@ -454,22 +462,22 @@ func loadDataProducerDefaultCfg(raw map[string]any, c *DataProducerDefaultCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addrs":
-			if v != nil {
-				c.Addrs.Store(v)
-			} else {
-				c.Addrs.Store("")
+			if list, ok := v.([]any); ok {
+				c.Addrs.Set(list)
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		case "topic":
-			if v != nil {
-				c.Topic.Store(v)
-			} else {
-				c.Topic.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Topic.Set(s)
+			default:
+				c.Topic.Set("")
 			}
 		}
 	}
@@ -479,22 +487,22 @@ func loadDataProducerGrayCfg(raw map[string]any, c *DataProducerGrayCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addrs":
-			if v != nil {
-				c.Addrs.Store(v)
-			} else {
-				c.Addrs.Store("")
+			if list, ok := v.([]any); ok {
+				c.Addrs.Set(list)
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		case "topic":
-			if v != nil {
-				c.Topic.Store(v)
-			} else {
-				c.Topic.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Topic.Set(s)
+			default:
+				c.Topic.Set("")
 			}
 		}
 	}
@@ -504,22 +512,22 @@ func loadDataProducerShadowCfg(raw map[string]any, c *DataProducerShadowCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addrs":
-			if v != nil {
-				c.Addrs.Store(v)
-			} else {
-				c.Addrs.Store("")
+			if list, ok := v.([]any); ok {
+				c.Addrs.Set(list)
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		case "topic":
-			if v != nil {
-				c.Topic.Store(v)
-			} else {
-				c.Topic.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Topic.Set(s)
+			default:
+				c.Topic.Set("")
 			}
 		}
 	}
@@ -559,29 +567,32 @@ func loadDataRedisDefaultCfg(raw map[string]any, c *DataRedisDefaultCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			if v != nil {
-				c.Addr.Store(v)
-			} else {
-				c.Addr.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Addr.Set(s)
+			default:
+				c.Addr.Set("")
 			}
 		case "db":
 			switch n := v.(type) {
 			case int:
-				c.Db.Store(int64(n))
+				c.Db.Set(int64(n))
 			case int64:
-				c.Db.Store(n)
+				c.Db.Set(n)
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		case "password":
-			if v != nil {
-				c.Password.Store(v)
-			} else {
-				c.Password.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Password.Set(s)
+			default:
+				c.Password.Set("")
 			}
 		}
 	}
@@ -591,29 +602,32 @@ func loadDataRedisGrayCfg(raw map[string]any, c *DataRedisGrayCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			if v != nil {
-				c.Addr.Store(v)
-			} else {
-				c.Addr.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Addr.Set(s)
+			default:
+				c.Addr.Set("")
 			}
 		case "db":
 			switch n := v.(type) {
 			case int:
-				c.Db.Store(int64(n))
+				c.Db.Set(int64(n))
 			case int64:
-				c.Db.Store(n)
+				c.Db.Set(n)
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		case "password":
-			if v != nil {
-				c.Password.Store(v)
-			} else {
-				c.Password.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Password.Set(s)
+			default:
+				c.Password.Set("")
 			}
 		}
 	}
@@ -623,29 +637,32 @@ func loadDataRedisShadowCfg(raw map[string]any, c *DataRedisShadowCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			if v != nil {
-				c.Addr.Store(v)
-			} else {
-				c.Addr.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Addr.Set(s)
+			default:
+				c.Addr.Set("")
 			}
 		case "db":
 			switch n := v.(type) {
 			case int:
-				c.Db.Store(int64(n))
+				c.Db.Set(int64(n))
 			case int64:
-				c.Db.Store(n)
+				c.Db.Set(n)
 			}
 		case "name":
-			if v != nil {
-				c.Name.Store(v)
-			} else {
-				c.Name.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Name.Set(s)
+			default:
+				c.Name.Set("")
 			}
 		case "password":
-			if v != nil {
-				c.Password.Store(v)
-			} else {
-				c.Password.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Password.Set(s)
+			default:
+				c.Password.Set("")
 			}
 		}
 	}
@@ -667,10 +684,13 @@ func loadDataRedisConfCfg(raw map[string]any, c *DataRedisConfCfg) {
 				loadDataRedisShadowCfg(m, &c.RedisShadow)
 			}
 		case "max_slowtime":
-			if v != nil {
-				c.MaxSlowtime.Store(v)
-			} else {
-				c.MaxSlowtime.Store("")
+			switch n := v.(type) {
+			case float64:
+				c.MaxSlowtime.Set(n)
+			case int:
+				c.MaxSlowtime.Set(float64(n))
+			case int64:
+				c.MaxSlowtime.Set(float64(n))
 			}
 		}
 	}
@@ -724,4 +744,3 @@ func loadConfigData(raw map[string]any, c *ConfigData) {
 		}
 	}
 }
-

@@ -61,10 +61,10 @@ func InitConfig(c context.Context) (cfg *config.Config, cleanup func(), err erro
 	}
 
 	ip, _ := os.Hostname()
-	config.Cfg.General.Ip.Store(ip)
+	config.Cfg.General.Ip.Set(ip)
 
 	if Version != "" {
-		config.Cfg.General.Version.Store(Version)
+		config.Cfg.General.Version.Set(Version)
 	}
 
 	cfg = config.Cfg
@@ -73,37 +73,37 @@ func InitConfig(c context.Context) (cfg *config.Config, cleanup func(), err erro
 
 func InitLogger(cfg *config.Config) (log logger.Logger, cleanup func(), err error) {
 
-	cfg.General.Entry.Store(Entry)
+	cfg.General.Entry.Set(Entry)
 
 	var wit writer.Writer
 	wit = lumberjack.New(
 		lumberjack.WithFilename(
 			strings.NewReplacer(
-				"{entry}", cfg.General.Entry.Load().(string),
-			).Replace(cfg.ConfigGeneral.General.Logger.Filename.Load().(string)),
+				"{entry}", cfg.General.Entry.Get(),
+			).Replace(cfg.ConfigGeneral.General.Logger.Filename.Get()),
 		),
-		lumberjack.WithMaxBackups(int(cfg.ConfigGeneral.General.Logger.MaxBackup.Load())),
-		lumberjack.WithMaxSize(int(cfg.ConfigGeneral.General.Logger.MaxSize.Load())),
+		lumberjack.WithMaxBackups(int(cfg.ConfigGeneral.General.Logger.MaxBackup.Get())),
+		lumberjack.WithMaxSize(int(cfg.ConfigGeneral.General.Logger.MaxSize.Get())),
 	)
 
-	if cfg.General.Env.Load().(string) == EnvDev {
+	if cfg.General.Env.Get() == EnvDev {
 		wit = stdout.New()
 	}
 
 	opts := []slog.Option{
 		slog.WithWriter(wit),
 		slog.WithGlobalParam(
-			"env", cfg.ConfigGeneral.General.Env.Load().(string),
-			"ip", cfg.ConfigGeneral.General.Ip.Load().(string),
-			"name", cfg.ConfigGeneral.General.Name.Load().(string),
-			"version", cfg.ConfigGeneral.General.Version.Load().(string),
-			"entry", string(cfg.General.Entry.Load().(string)),
+			"env", cfg.ConfigGeneral.General.Env.Get(),
+			"ip", cfg.ConfigGeneral.General.Ip.Get(),
+			"name", cfg.ConfigGeneral.General.Name.Get(),
+			"version", cfg.ConfigGeneral.General.Version.Get(),
+			"entry", cfg.General.Entry.Get(),
 		),
-		slog.WithLevel(cfg.ConfigGeneral.General.Logger.Level.Load().(string)),
+		slog.WithLevel(cfg.ConfigGeneral.General.Logger.Level.Get()),
 		slog.WithContextParam(kitLog.KindFromContext),
 	}
 
-	if cfg.General.Env.Load().(string) == EnvDev {
+	if cfg.General.Env.Get() == EnvDev {
 		opts = append(opts, slog.WithHandler(slog.NewPrettyHandler()))
 	}
 	l := slog.New(opts...)

@@ -9,11 +9,11 @@ require (
 	github.com/neo532/gofr v1.0.17
 	github.com/neo532/gofr/middleware/trace v1.0.0
 	github.com/neo532/gofr/transport/grpc v1.0.2
-	github.com/neo532/gofr/transport/http v1.0.2
+	github.com/neo532/gofr/transport/http v1.0.3
 	github.com/neo532/gofr/transport/rpcx v1.0.2
 	github.com/neo532/gofr/transport/websocket v1.0.2
 	github.com/neo532/gofr_layout/proto v0.0.0
-	github.com/neo532/gokit v1.0.48
+	github.com/neo532/gokit v1.0.49
 	github.com/neo532/gokit/database/orm v1.0.0
 	github.com/neo532/gokit/database/redis v1.0.0
 	github.com/neo532/gokit/filepath v1.0.1

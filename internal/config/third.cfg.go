@@ -3,13 +3,12 @@
 package config
 
 import (
-	"sync/atomic"
-
+	"github.com/neo532/gokit/sync/atomicx"
 	"gopkg.in/yaml.v3"
 )
 
 type ThirdSampleCfg struct {
-	Domain atomic.Value `yaml:"domain"` // string
+	Domain atomicx.Atomic[string] `yaml:"domain"` // string
 }
 
 type ThirdCfg struct {
@@ -39,10 +38,11 @@ func loadThirdSampleCfg(raw map[string]any, c *ThirdSampleCfg) {
 	for k, v := range raw {
 		switch k {
 		case "domain":
-			if v != nil {
-				c.Domain.Store(v)
-			} else {
-				c.Domain.Store("")
+			switch s := v.(type) {
+			case string:
+				c.Domain.Set(s)
+			default:
+				c.Domain.Set("")
 			}
 		}
 	}
@@ -69,4 +69,3 @@ func loadConfigThird(raw map[string]any, c *ConfigThird) {
 		}
 	}
 }
-
