@@ -1,5 +1,7 @@
 package log
 
 const (
-	KeyKind = "kind"
+	KeyKind        = "kind"
+	KeyTraceID     = "traceId"
+	KeyTraceparent = "traceparent"
 )

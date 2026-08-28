@@ -174,19 +174,9 @@ func loadDataConsumerDefaultCfg(raw map[string]any, c *DataConsumerDefaultCfg) {
 				c.Addrs.Set(list)
 			}
 		case "group":
-			switch s := v.(type) {
-			case string:
-				c.Group.Set(s)
-			default:
-				c.Group.Set("")
-			}
+			c.Group.SetAny(v)
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		case "topics":
 			if list, ok := v.([]any); ok {
 				c.Topics.Set(list)
@@ -203,19 +193,9 @@ func loadDataConsumerGrayCfg(raw map[string]any, c *DataConsumerGrayCfg) {
 				c.Addrs.Set(list)
 			}
 		case "group":
-			switch s := v.(type) {
-			case string:
-				c.Group.Set(s)
-			default:
-				c.Group.Set("")
-			}
+			c.Group.SetAny(v)
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		case "topics":
 			if list, ok := v.([]any); ok {
 				c.Topics.Set(list)
@@ -232,19 +212,9 @@ func loadDataConsumerShadowCfg(raw map[string]any, c *DataConsumerShadowCfg) {
 				c.Addrs.Set(list)
 			}
 		case "group":
-			switch s := v.(type) {
-			case string:
-				c.Group.Set(s)
-			default:
-				c.Group.Set("")
-			}
+			c.Group.SetAny(v)
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		case "topics":
 			if list, ok := v.([]any); ok {
 				c.Topics.Set(list)
@@ -269,14 +239,7 @@ func loadDataConsumerConfCfg(raw map[string]any, c *DataConsumerConfCfg) {
 				loadDataConsumerShadowCfg(m, &c.ConsumerShadow)
 			}
 		case "max_slowtime":
-			switch n := v.(type) {
-			case float64:
-				c.MaxSlowtime.Set(n)
-			case int:
-				c.MaxSlowtime.Set(float64(n))
-			case int64:
-				c.MaxSlowtime.Set(float64(n))
-			}
+			c.MaxSlowtime.SetAny(v)
 		}
 	}
 }
@@ -296,19 +259,9 @@ func loadDataDatabaseMasterCfg(raw map[string]any, c *DataDatabaseMasterCfg) {
 	for k, v := range raw {
 		switch k {
 		case "dsn":
-			switch s := v.(type) {
-			case string:
-				c.Dsn.Set(s)
-			default:
-				c.Dsn.Set("")
-			}
+			c.Dsn.SetAny(v)
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		}
 	}
 }
@@ -317,19 +270,9 @@ func loadDataDatabaseShadowMasterCfg(raw map[string]any, c *DataDatabaseShadowMa
 	for k, v := range raw {
 		switch k {
 		case "dsn":
-			switch s := v.(type) {
-			case string:
-				c.Dsn.Set(s)
-			default:
-				c.Dsn.Set("")
-			}
+			c.Dsn.SetAny(v)
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		}
 	}
 }
@@ -338,19 +281,9 @@ func loadDataDatabaseShadowSlaveCfg(raw map[string]any, c *DataDatabaseShadowSla
 	for k, v := range raw {
 		switch k {
 		case "dsn":
-			switch s := v.(type) {
-			case string:
-				c.Dsn.Set(s)
-			default:
-				c.Dsn.Set("")
-			}
+			c.Dsn.SetAny(v)
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		}
 	}
 }
@@ -359,19 +292,9 @@ func loadDataDatabaseSlaveCfg(raw map[string]any, c *DataDatabaseSlaveCfg) {
 	for k, v := range raw {
 		switch k {
 		case "dsn":
-			switch s := v.(type) {
-			case string:
-				c.Dsn.Set(s)
-			default:
-				c.Dsn.Set("")
-			}
+			c.Dsn.SetAny(v)
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		}
 	}
 }
@@ -396,42 +319,15 @@ func loadDataDatabaseConfCfg(raw map[string]any, c *DataDatabaseConfCfg) {
 				loadDataDatabaseSlaveCfg(m, &c.DatabaseSlave)
 			}
 		case "conn_max_lifetime":
-			switch n := v.(type) {
-			case int:
-				c.ConnMaxLifetime.Set(int64(n))
-			case int64:
-				c.ConnMaxLifetime.Set(n)
-			}
+			c.ConnMaxLifetime.SetAny(v)
 		case "max_idle_conns":
-			switch n := v.(type) {
-			case int:
-				c.MaxIdleConns.Set(int64(n))
-			case int64:
-				c.MaxIdleConns.Set(n)
-			}
+			c.MaxIdleConns.SetAny(v)
 		case "max_open_conns":
-			switch n := v.(type) {
-			case int:
-				c.MaxOpenConns.Set(int64(n))
-			case int64:
-				c.MaxOpenConns.Set(n)
-			}
+			c.MaxOpenConns.SetAny(v)
 		case "max_slowtime":
-			switch n := v.(type) {
-			case float64:
-				c.MaxSlowtime.Set(n)
-			case int:
-				c.MaxSlowtime.Set(float64(n))
-			case int64:
-				c.MaxSlowtime.Set(float64(n))
-			}
+			c.MaxSlowtime.SetAny(v)
 		case "table_prefix":
-			switch s := v.(type) {
-			case string:
-				c.TablePrefix.Set(s)
-			default:
-				c.TablePrefix.Set("")
-			}
+			c.TablePrefix.SetAny(v)
 		}
 	}
 }
@@ -466,19 +362,9 @@ func loadDataProducerDefaultCfg(raw map[string]any, c *DataProducerDefaultCfg) {
 				c.Addrs.Set(list)
 			}
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		case "topic":
-			switch s := v.(type) {
-			case string:
-				c.Topic.Set(s)
-			default:
-				c.Topic.Set("")
-			}
+			c.Topic.SetAny(v)
 		}
 	}
 }
@@ -491,19 +377,9 @@ func loadDataProducerGrayCfg(raw map[string]any, c *DataProducerGrayCfg) {
 				c.Addrs.Set(list)
 			}
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		case "topic":
-			switch s := v.(type) {
-			case string:
-				c.Topic.Set(s)
-			default:
-				c.Topic.Set("")
-			}
+			c.Topic.SetAny(v)
 		}
 	}
 }
@@ -516,19 +392,9 @@ func loadDataProducerShadowCfg(raw map[string]any, c *DataProducerShadowCfg) {
 				c.Addrs.Set(list)
 			}
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		case "topic":
-			switch s := v.(type) {
-			case string:
-				c.Topic.Set(s)
-			default:
-				c.Topic.Set("")
-			}
+			c.Topic.SetAny(v)
 		}
 	}
 }
@@ -567,33 +433,13 @@ func loadDataRedisDefaultCfg(raw map[string]any, c *DataRedisDefaultCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			switch s := v.(type) {
-			case string:
-				c.Addr.Set(s)
-			default:
-				c.Addr.Set("")
-			}
+			c.Addr.SetAny(v)
 		case "db":
-			switch n := v.(type) {
-			case int:
-				c.Db.Set(int64(n))
-			case int64:
-				c.Db.Set(n)
-			}
+			c.Db.SetAny(v)
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		case "password":
-			switch s := v.(type) {
-			case string:
-				c.Password.Set(s)
-			default:
-				c.Password.Set("")
-			}
+			c.Password.SetAny(v)
 		}
 	}
 }
@@ -602,33 +448,13 @@ func loadDataRedisGrayCfg(raw map[string]any, c *DataRedisGrayCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			switch s := v.(type) {
-			case string:
-				c.Addr.Set(s)
-			default:
-				c.Addr.Set("")
-			}
+			c.Addr.SetAny(v)
 		case "db":
-			switch n := v.(type) {
-			case int:
-				c.Db.Set(int64(n))
-			case int64:
-				c.Db.Set(n)
-			}
+			c.Db.SetAny(v)
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		case "password":
-			switch s := v.(type) {
-			case string:
-				c.Password.Set(s)
-			default:
-				c.Password.Set("")
-			}
+			c.Password.SetAny(v)
 		}
 	}
 }
@@ -637,33 +463,13 @@ func loadDataRedisShadowCfg(raw map[string]any, c *DataRedisShadowCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			switch s := v.(type) {
-			case string:
-				c.Addr.Set(s)
-			default:
-				c.Addr.Set("")
-			}
+			c.Addr.SetAny(v)
 		case "db":
-			switch n := v.(type) {
-			case int:
-				c.Db.Set(int64(n))
-			case int64:
-				c.Db.Set(n)
-			}
+			c.Db.SetAny(v)
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		case "password":
-			switch s := v.(type) {
-			case string:
-				c.Password.Set(s)
-			default:
-				c.Password.Set("")
-			}
+			c.Password.SetAny(v)
 		}
 	}
 }
@@ -684,14 +490,7 @@ func loadDataRedisConfCfg(raw map[string]any, c *DataRedisConfCfg) {
 				loadDataRedisShadowCfg(m, &c.RedisShadow)
 			}
 		case "max_slowtime":
-			switch n := v.(type) {
-			case float64:
-				c.MaxSlowtime.Set(n)
-			case int:
-				c.MaxSlowtime.Set(float64(n))
-			case int64:
-				c.MaxSlowtime.Set(float64(n))
-			}
+			c.MaxSlowtime.SetAny(v)
 		}
 	}
 }

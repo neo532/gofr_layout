@@ -38,12 +38,7 @@ func loadThirdSampleCfg(raw map[string]any, c *ThirdSampleCfg) {
 	for k, v := range raw {
 		switch k {
 		case "domain":
-			switch s := v.(type) {
-			case string:
-				c.Domain.Set(s)
-			default:
-				c.Domain.Set("")
-			}
+			c.Domain.SetAny(v)
 		}
 	}
 }

@@ -94,13 +94,18 @@ func InitLogger(cfg *config.Config) (log logger.Logger, cleanup func(), err erro
 		slog.WithWriter(wit),
 		slog.WithGlobalParam(
 			"env", cfg.ConfigGeneral.General.Env.Get(),
-			"ip", cfg.ConfigGeneral.General.Ip.Get(),
-			"name", cfg.ConfigGeneral.General.Name.Get(),
+			"serviceIp", cfg.ConfigGeneral.General.Ip.Get(),
+			"service", cfg.ConfigGeneral.General.Name.Get(),
 			"version", cfg.ConfigGeneral.General.Version.Get(),
 			"entry", cfg.General.Entry.Get(),
 		),
 		slog.WithLevel(cfg.ConfigGeneral.General.Logger.Level.Get()),
-		slog.WithContextParam(kitLog.KindFromContext),
+		slog.WithContextParam(
+			kitLog.KindFromContext,
+			kitLog.TraceIDFromContext,
+			kitLog.TraceparentFromContext,
+			kitLog.FileFromContext,
+		),
 	}
 
 	if cfg.General.Env.Get() == EnvDev {

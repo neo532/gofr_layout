@@ -1,13 +1,13 @@
 server:
   http:
-    addr: 0.0.0.0:8500
+    addr: 0.0.0.0:8600
     timeout: 3 # seconds
   grpc:
-    addr: 0.0.0.0:8501
+    addr: 0.0.0.0:8601
     timeout: 3 # seconds
   rpcx:
-    addr: 0.0.0.0:8502
+    addr: 0.0.0.0:8602
     timeout: 3 # seconds
   websocket:
-    addr: 0.0.0.0:8503
+    addr: 0.0.0.0:8603
     timeout: 3 # seconds

@@ -33,7 +33,7 @@ func newApp(
 	return gofr.New(
 		gofr.ID(cfg.General.Ip.Get()),
 		gofr.Name(cfg.General.Name.Get()),
-		gofr.Version(Version),
+		gofr.VersionGit(Version),
 		gofr.Metadata(map[string]string{}),
 		gofr.Context(c),
 		gofr.Server(srv),

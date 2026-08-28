@@ -13,7 +13,7 @@ require (
 	github.com/neo532/gofr/transport/rpcx v1.0.2
 	github.com/neo532/gofr/transport/websocket v1.0.2
 	github.com/neo532/gofr_layout/proto v0.0.0
-	github.com/neo532/gokit v1.0.49
+	github.com/neo532/gokit v1.0.50
 	github.com/neo532/gokit/database/orm v1.0.0
 	github.com/neo532/gokit/database/redis v1.0.0
 	github.com/neo532/gokit/filepath v1.0.1

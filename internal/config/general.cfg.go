@@ -48,44 +48,17 @@ func loadGeneralLoggerCfg(raw map[string]any, c *GeneralLoggerCfg) {
 	for k, v := range raw {
 		switch k {
 		case "compress":
-			if b, ok := v.(bool); ok {
-				c.Compress.Set(b)
-			}
+			c.Compress.SetAny(v)
 		case "filename":
-			switch s := v.(type) {
-			case string:
-				c.Filename.Set(s)
-			default:
-				c.Filename.Set("")
-			}
+			c.Filename.SetAny(v)
 		case "level":
-			switch s := v.(type) {
-			case string:
-				c.Level.Set(s)
-			default:
-				c.Level.Set("")
-			}
+			c.Level.SetAny(v)
 		case "max_age":
-			switch n := v.(type) {
-			case int:
-				c.MaxAge.Set(int64(n))
-			case int64:
-				c.MaxAge.Set(n)
-			}
+			c.MaxAge.SetAny(v)
 		case "max_backup":
-			switch n := v.(type) {
-			case int:
-				c.MaxBackup.Set(int64(n))
-			case int64:
-				c.MaxBackup.Set(n)
-			}
+			c.MaxBackup.SetAny(v)
 		case "max_size":
-			switch n := v.(type) {
-			case int:
-				c.MaxSize.Set(int64(n))
-			case int64:
-				c.MaxSize.Set(n)
-			}
+			c.MaxSize.SetAny(v)
 		}
 	}
 }
@@ -94,44 +67,19 @@ func loadGeneralCfg(raw map[string]any, c *GeneralCfg) {
 	for k, v := range raw {
 		switch k {
 		case "entry":
-			switch s := v.(type) {
-			case string:
-				c.Entry.Set(s)
-			default:
-				c.Entry.Set("")
-			}
+			c.Entry.SetAny(v)
 		case "env":
-			switch s := v.(type) {
-			case string:
-				c.Env.Set(s)
-			default:
-				c.Env.Set("")
-			}
+			c.Env.SetAny(v)
 		case "ip":
-			switch s := v.(type) {
-			case string:
-				c.Ip.Set(s)
-			default:
-				c.Ip.Set("")
-			}
+			c.Ip.SetAny(v)
 		case "logger":
 			if m, ok := v.(map[string]any); ok {
 				loadGeneralLoggerCfg(m, &c.Logger)
 			}
 		case "name":
-			switch s := v.(type) {
-			case string:
-				c.Name.Set(s)
-			default:
-				c.Name.Set("")
-			}
+			c.Name.SetAny(v)
 		case "version":
-			switch s := v.(type) {
-			case string:
-				c.Version.Set(s)
-			default:
-				c.Version.Set("")
-			}
+			c.Version.SetAny(v)
 		}
 	}
 }

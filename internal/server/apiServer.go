@@ -3,7 +3,7 @@ package server
 import (
 	"time"
 
-	"github.com/neo532/gofr/middleware"
+	"github.com/neo532/gofr/middleware/validator"
 	"github.com/neo532/gofr/transport/grpc"
 	"github.com/neo532/gofr/transport/http"
 	"github.com/neo532/gofr/transport/rpcx"
@@ -18,7 +18,7 @@ func NewHttpServer(cfg *config.Config) *http.Server {
 		http.Address(cfg.Server.Http.Addr.Get()),
 		http.Timeout(time.Duration(cfg.Server.Http.Timeout.Get()*int64(time.Second))),
 		http.Middleware(
-			middleware.Validator(),
+			validator.Validator(),
 		),
 	)
 }
@@ -27,7 +27,7 @@ func NewGrpcServer(cfg *config.Config) *grpc.Server {
 	return grpc.NewServer(
 		grpc.Address(cfg.Server.Grpc.Addr.Get()),
 		grpc.Middleware(
-			middleware.Validator(),
+			validator.Validator(),
 		),
 		grpc.GrpcOptions(
 			ggrpc.ConnectionTimeout(time.Duration(cfg.Server.Grpc.Timeout.Get()*int64(time.Second))),
@@ -39,7 +39,7 @@ func NewRpcxerver(cfg *config.Config) *rpcx.Server {
 	return rpcx.NewServer(
 		rpcx.Address(cfg.Server.Rpcx.Addr.Get()),
 		rpcx.Middleware(
-			middleware.Validator(),
+			validator.Validator(),
 		),
 		rpcx.RpcxOptions(
 			grpcx.WithReadTimeout(time.Duration(cfg.Server.Websocket.Timeout.Get()*int64(time.Second))),
@@ -53,7 +53,7 @@ func NewWebsocket(cfg *config.Config) *websocket.Server {
 		websocket.Address(cfg.Server.Websocket.Addr.Get()),
 		websocket.Timeout(time.Duration(cfg.Server.Websocket.Timeout.Get()*int64(time.Second))),
 		websocket.Middleware(
-			middleware.Validator(),
+			validator.Validator(),
 		),
 	)
 }

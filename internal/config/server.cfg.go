@@ -57,19 +57,9 @@ func loadServerGrpcCfg(raw map[string]any, c *ServerGrpcCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			switch s := v.(type) {
-			case string:
-				c.Addr.Set(s)
-			default:
-				c.Addr.Set("")
-			}
+			c.Addr.SetAny(v)
 		case "timeout":
-			switch n := v.(type) {
-			case int:
-				c.Timeout.Set(int64(n))
-			case int64:
-				c.Timeout.Set(n)
-			}
+			c.Timeout.SetAny(v)
 		}
 	}
 }
@@ -78,19 +68,9 @@ func loadServerHttpCfg(raw map[string]any, c *ServerHttpCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			switch s := v.(type) {
-			case string:
-				c.Addr.Set(s)
-			default:
-				c.Addr.Set("")
-			}
+			c.Addr.SetAny(v)
 		case "timeout":
-			switch n := v.(type) {
-			case int:
-				c.Timeout.Set(int64(n))
-			case int64:
-				c.Timeout.Set(n)
-			}
+			c.Timeout.SetAny(v)
 		}
 	}
 }
@@ -99,19 +79,9 @@ func loadServerRpcxCfg(raw map[string]any, c *ServerRpcxCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			switch s := v.(type) {
-			case string:
-				c.Addr.Set(s)
-			default:
-				c.Addr.Set("")
-			}
+			c.Addr.SetAny(v)
 		case "timeout":
-			switch n := v.(type) {
-			case int:
-				c.Timeout.Set(int64(n))
-			case int64:
-				c.Timeout.Set(n)
-			}
+			c.Timeout.SetAny(v)
 		}
 	}
 }
@@ -120,19 +90,9 @@ func loadServerWebsocketCfg(raw map[string]any, c *ServerWebsocketCfg) {
 	for k, v := range raw {
 		switch k {
 		case "addr":
-			switch s := v.(type) {
-			case string:
-				c.Addr.Set(s)
-			default:
-				c.Addr.Set("")
-			}
+			c.Addr.SetAny(v)
 		case "timeout":
-			switch n := v.(type) {
-			case int:
-				c.Timeout.Set(int64(n))
-			case int64:
-				c.Timeout.Set(n)
-			}
+			c.Timeout.SetAny(v)
 		}
 	}
 }
